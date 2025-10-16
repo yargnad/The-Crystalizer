@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystalizer Context Curator</title>
+    <style>
+        /* Wabi-Sabi Themed CSS */
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1d2e 0%, #242838 100%); /* Lighter gradient background */
+            color: #e8eaf6; /* Softer white */
+            width: 600px; /* Fixed width for extension popup */
+            height: 700px; /* Match browser height */
+            min-height: 700px;
+            max-height: 700px;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Custom scrollbar for Wabi-Sabi look */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a25; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #6366f1; /* Indigo-500 */
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5; /* Indigo-600 */
+        }
+
+        /* Utility Classes derived from Tailwind */
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-center { justify-content: center; }
+        .space-y-4 > * { margin-top: 1rem; margin-bottom: 1rem; }
+        .p-4 { padding: 1rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .block { display: block; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: 700; }
+        .font-semibold { font-weight: 600; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-md { border-radius: 0.375rem; }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.2); }
+        .shadow-indigo-500\/30 { box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -4px rgba(99, 102, 241, 0.3); }
+        .shadow-green-500\/30 { box-shadow: 0 10px 15px -3px rgba(16, 185, 129, 0.3), 0 4px 6px -4px rgba(16, 185, 129, 0.3); }
+        .transition { transition-property: all; transition-duration: 300ms; }
+        .duration-200 { transition-duration: 200ms; }
+        .duration-300 { transition-duration: 300ms; }
+        .bg-indigo-700 { background-color: #4338ca; }
+        .hover\:bg-indigo-600:hover { background-color: #4f46e5; }
+        .bg-indigo-600 { background-color: #4f46e5; }
+        .hover\:bg-indigo-500:hover { background-color: #6366f1; }
+        .bg-indigo-700\/50 { background-color: rgba(67, 56, 202, 0.5); }
+        .hover\:bg-indigo-600\/70:hover { background-color: rgba(79, 70, 229, 0.7); }
+        .bg-green-600 { background-color: #10b981; }
+        .hover\:bg-green-500:hover { background-color: #34d399; }
+        .bg-red-700\/70 { background-color: rgba(185, 28, 28, 0.7); }
+        .hover\:bg-red-600\/90:hover { background-color: rgba(220, 38, 38, 0.9); }
+        .bg-indigo-900\/50 { background-color: rgba(30, 27, 49, 0.5); }
+        .bg-indigo-900\/20 { background-color: rgba(30, 27, 49, 0.2); }
+        .bg-indigo-900\/40 { background-color: rgba(30, 27, 49, 0.4); }
+        .bg-emerald-600 { background-color: #10b981; }
+        .bg-blue-600 { background-color: #2563eb; }
+        .border-emerald-500 { border-color: #10b981; }
+        .border-blue-500 { border-color: #3b82f6; }
+        .text-emerald-100 { color: #d1fae5; }
+        .text-blue-100 { color: #dbeafe; }
+        .bg-amber-600\/30 { background-color: rgba(217, 119, 6, 0.3); }
+        .border-amber-500\/40 { border-color: rgba(245, 158, 11, 0.4); }
+        .text-amber-300 { color: #fcd34d; }
+        .text-white { color: #ffffff; }
+        .text-indigo-200\/90 { color: rgba(199, 210, 254, 0.9); }
+        .text-indigo-300 { color: #a5b4fc; }
+        .text-white\/70 { color: rgba(255, 255, 255, 0.7); }
+        .text-red-400 { color: #f87171; }
+        .text-green-400 { color: #4ade80; }
+        .text-yellow-400 { color: #facc15; }
+        .text-indigo-400 { color: #818cf8; }
+        .text-indigo-400\/70 { color: rgba(129, 140, 248, 0.7); }
+        .italic { font-style: italic; }
+        .border { border-width: 1px; }
+        .border-indigo-700\/50 { border-color: rgba(67, 56, 202, 0.5); }
+        .border-indigo-700 { border-color: #4338ca; }
+        .border-red-700 { border-color: #b91c1c; }
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .h-32 { height: 8rem; }
+        .relative { position: relative; }
+        .overflow-hidden { overflow: hidden; }
+        .transform { transform: var(--tw-transform); }
+
+        /* Sticky Navigation Buttons */
+        .sticky-nav {
+            position: sticky;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, #1a1d2e 85%, transparent);
+            padding: 0.5rem 0.75rem;
+            margin-top: auto;
+            z-index: 20;
+            border-top: 1px solid rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Smaller, minimal buttons */
+        button {
+            font-size: 0.813rem;
+            padding: 0.375rem 0.75rem;
+        }
+
+        /* Sequential Panel Flow Styles */
+        .panel {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            padding: 1rem;
+            padding-bottom: 0;
+            box-sizing: border-box;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .panel.active {
+            opacity: 1;
+            transform: translateX(0);
+            position: relative;
+            pointer-events: auto;
+        }
+        .panel.inactive-left {
+            transform: translateX(-100%);
+        }
+        .panel.inactive-right {
+            transform: translateX(100%);
+        }
+        
+        /* Panel content area that scrolls */
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 0.5rem;
+        }
+
+        /* Collapsible Config Styles */
+        .collapse-indicator {
+            display: inline-block;
+            transition: transform 0.3s ease-in-out;
+        }
+        .collapse-indicator.rotate-90 {
+            transform: rotate(90deg);
+        }
+        .hidden { display: none; }
+
+        /* Custom Toggle Switch for AutoDetect */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #4338ca; /* Indigo-700 (OFF) */
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #10b981; /* Green-600 (ON) */
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Persona Color Palette (Wabi-Sabi inspired) */
+        .persona-color-0 { border-left: 4px solid #8b5cf6; } /* Purple */
+        .persona-color-1 { border-left: 4px solid #10b981; } /* Green */
+        .persona-color-2 { border-left: 4px solid #f59e0b; } /* Amber */
+        .persona-color-3 { border-left: 4px solid #3b82f6; } /* Blue */
+        .persona-color-4 { border-left: 4px solid #ec4899; } /* Pink */
+        .persona-color-5 { border-left: 4px solid #14b8a6; } /* Teal */
+        .persona-color-6 { border-left: 4px solid #f97316; } /* Orange */
+        .persona-color-7 { border-left: 4px solid #6366f1; } /* Indigo */
+
+        .persona-bg-0 { background-color: rgba(139, 92, 246, 0.1); }
+        .persona-bg-1 { background-color: rgba(16, 185, 129, 0.1); }
+        .persona-bg-2 { background-color: rgba(245, 158, 11, 0.1); }
+        .persona-bg-3 { background-color: rgba(59, 130, 246, 0.1); }
+        .persona-bg-4 { background-color: rgba(236, 72, 153, 0.1); }
+        .persona-bg-5 { background-color: rgba(20, 184, 166, 0.1); }
+        .persona-bg-6 { background-color: rgba(249, 115, 22, 0.1); }
+        .persona-bg-7 { background-color: rgba(99, 102, 241, 0.1); }
+
+        /* Turn Pair Card Styles */
+        .turn-pair-card {
+            transition: all 0.2s ease;
+        }
+        .turn-pair-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        .turn-content {
+            max-height: 4.5rem; /* ~3 lines */
+            overflow: hidden;
+            position: relative;
+        }
+        .turn-content.expanded {
+            max-height: none;
+        }
+        .turn-content:not(.expanded)::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1.5rem;
+            background: linear-gradient(transparent, rgba(13, 13, 18, 0.9));
+        }
+
+        /* Persona Library Card */
+        .persona-card {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .persona-card:hover {
+            background-color: rgba(67, 56, 202, 0.3);
+            transform: translateX(4px);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Main Application Container -->
+    <div id="appContainer" style="display: flex; flex-direction: column; height: 100%; padding: 1rem;">
+        <!-- Header -->
+        <header class="text-center mb-2" style="flex-shrink: 0; position: relative; padding: 0.5rem 1rem;">
+            <div class="flex items-center justify-between">
+                <div class="flex-1"></div>
+                <div class="flex-1 text-center">
+                    <h1 class="text-xl font-bold text-indigo-200">💎 Crystalizer</h1>
+                    <p class="text-xs text-indigo-300/60">Universal Context Curator</p>
+                </div>
+                <div class="flex-1 text-right">
+                    <button id="resetToStep1Btn" class="text-xs bg-indigo-700/30 hover:bg-indigo-600/40 text-indigo-200 px-2 py-0.5 rounded transition" title="Reset to Step 1">
+                        🔄
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dynamic Status Bar -->
+        <div id="statusContainer" class="mb-3" style="flex-shrink: 0;">
+            <p id="detectionStatus" class="text-center font-bold text-lg text-indigo-400">Loading configurations...</p>
+        </div>
+        
+        <!-- Sequential Panel Wrapper -->
+        <div id="panelWrapper" class="relative" style="flex: 1; overflow: hidden; min-height: 0;">
+            
+            <!-- Step 1: Persona Management & Configuration -->
+            <div id="step1" class="panel active">
+                <div class="panel-content">
+                    <h2 class="text-xl font-bold text-indigo-300 mb-4">💎 Step 1: Persona Library</h2>
+
+                    <!-- Detected Platform Display -->
+                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-4">
+                    <p class="text-sm text-white/70 mb-1">Current Platform Detected:</p>
+                    <div class="flex items-center justify-between">
+                        <span id="detectedPlatformNameStep1" class="font-bold text-indigo-300 text-lg">Detecting...</span>
+                        <span id="detectedPlatformIdStep1" class="italic text-xs text-white/50"></span>
+                    </div>
+                </div>
+
+                <!-- Persona Library -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-indigo-300">📚 Stored Personas</h3>
+                        <div class="flex space-x-2">
+                            <button id="importPersonaBtn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1 px-3 rounded-md transition duration-200 shadow-md text-xs" title="Import previously exported persona">
+                                📥 Import
+                            </button>
+                            <button id="exportAllPersonasBtn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1 px-3 rounded-md transition duration-200 shadow-md text-xs" title="Export all personas as backup">
+                                📦 Export All
+                            </button>
+                            <input type="file" id="importPersonaFile" accept="application/json" class="hidden">
+                        </div>
+                    </div>
+                    
+                    <div id="personaLibrary" class="max-h-64 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20">
+                        <p class="text-indigo-400/70 italic text-center py-8 text-sm">No stored personas yet. Scrape a chat in Step 2 to create your first persona!</p>
+                    </div>
+                </div>
+
+                <!-- Collapsible Platform Configurator -->
+                <div class="mb-4">
+                    <button id="toggleConfiguratorBtn" class="w-full flex items-center justify-between p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 hover:bg-indigo-900/70 transition duration-200">
+                        <span class="font-semibold text-indigo-300">⚙️ Platform Configurator (Advanced)</span>
+                        <span id="configuratorToggleIcon" class="collapse-indicator">►</span>
+                    </button>
+                    
+                    <div id="configuratorSection" class="hidden mt-2">
+                        <div class="flex items-center justify-between mb-3 p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50">
+                            <span class="font-semibold text-sm">Auto-Detect Platform</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="autoDetectToggle">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-semibold text-indigo-300 text-sm">LLM Platform Configs</h4>
+                            <button id="addCustomConfigBtn" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-2 rounded-md transition duration-200 shadow-md text-xs">
+                                + Add Custom
+                            </button>
+                        </div>
+                        
+                        <div id="configuratorBody" class="space-y-2 max-h-48 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20 mb-3">
+                            <p class="text-center text-sm text-white/50 py-4">Loading configuration list...</p>
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <button id="exportConfigBtn" class="w-1/2 bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-2 px-3 rounded-lg transition duration-200 shadow-md text-xs">Export Configs</button>
+                            <button id="importConfigBtn" class="w-1/2 bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-2 px-3 rounded-lg transition duration-200 shadow-md text-xs">Import Configs</button>
+                            <input type="file" id="importConfigFile" accept="application/json" class="hidden">
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+                <div class="sticky-nav">
+                    <button id="nextStep1Btn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-sm">
+                        Next: Scrape Chat ➔
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Scrape & Store -->
+            <div id="step2" class="panel inactive-right">
+                <div class="panel-content">
+                    <h2 class="text-xl font-bold text-indigo-300 mb-4">⚔️ Step 2: Scrape & Store</h2>
+                    
+                    <!-- Current Platform Info -->
+                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-4">
+                    <p class="text-sm text-white/70 mb-1">Scraping From:</p>
+                    <div class="flex items-center justify-between">
+                        <span id="detectedPlatformName" class="font-bold text-indigo-300 text-lg">None detected</span>
+                        <span id="detectedPlatformId" class="italic text-xs text-white/50"></span>
+                    </div>
+                </div>
+
+                <!-- Scrape Button -->
+                <button id="scrapeCurrentChatBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-lg mb-4">
+                    <span class="text-xl">⚔️</span> Scrape Current Chat
+                </button>
+
+                <!-- Save Persona Dialog (shown after scrape) -->
+                <div id="savePersonaDialog" class="hidden mb-4 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700">
+                    <h3 class="font-semibold text-indigo-300 mb-3">💾 Save as Persona</h3>
+                    <input type="text" id="personaNameInput" placeholder="Enter persona name (e.g., 'Project Alpha - Gemini')" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
+                    
+                    <div class="flex items-center mb-3 p-2 bg-indigo-900/30 rounded-md">
+                        <input type="checkbox" id="addToMergeQueueCheckbox" class="mr-2">
+                        <label for="addToMergeQueueCheckbox" class="text-sm text-white/90">Add to Merge Queue</label>
+                    </div>
+                    
+                    <div class="flex space-x-2">
+                        <button id="savePersonaBtn" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Save Persona
+                        </button>
+                        <button id="cancelPersonaBtn" class="flex-1 bg-red-700/70 hover:bg-red-600/90 text-white font-bold py-2 px-4 rounded-lg transition duration-200">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Merge Queue -->
+                <div class="mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-indigo-300">🔗 Merge Queue</h3>
+                        <span id="mergeQueueCount" class="text-xs text-white/60">0 chats selected</span>
+                    </div>
+                    
+                    <div id="mergeQueue" class="max-h-48 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20">
+                        <p class="text-indigo-400/70 italic text-center py-4 text-sm">No chats in merge queue. Check "Add to Merge Queue" when saving personas.</p>
+                    </div>
+                </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="sticky-nav flex justify-between">
+                    <button id="prevStep2Btn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1.5 px-3 rounded-lg transition duration-200 shadow-md text-sm">
+                        ⬅️ Back
+                    </button>
+                    <button id="nextStep2Btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-sm">
+                        Next: Merge & Prune ➔
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Merge & Prune -->
+            <div id="step3" class="panel inactive-right">
+                <div class="panel-content">
+                    <h2 class="text-xl font-bold text-indigo-300 mb-4">✂️ Step 3: Merge & Prune</h2>
+
+                    <!-- Merge Options (shown only if multiple chats in queue) -->
+                <div id="mergeOptionsSection" class="mb-4 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700">
+                    <h3 class="font-semibold text-indigo-300 mb-3">🔗 Merge Strategy</h3>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm text-white/90 mb-2">How to merge chats:</label>
+                        <select id="mergeStrategySelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md">
+                            <option value="chronological">⏱️ Chronological (by timestamp)</option>
+                            <option value="manual">📋 Manual Order (as arranged in queue)</option>
+                            <option value="platform">🏢 By Platform (group by source)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="block text-sm text-white/90 mb-2">When to prune:</label>
+                        <select id="pruneTimingSelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md">
+                            <option value="after">✂️ After Merge (prune combined timeline)</option>
+                            <option value="before">📝 Before Merge (prune each persona separately)</option>
+                        </select>
+                    </div>
+                    
+                    <button id="executeMergeBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
+                        🔗 Execute Merge
+                    </button>
+                </div>
+
+                <!-- Persona Legend (color-coded) -->
+                <div id="personaLegend" class="mb-3 p-2 bg-indigo-900/30 rounded-lg border border-indigo-700/50">
+                    <p class="text-xs text-white/70 mb-1">Persona Colors:</p>
+                    <div id="legendItems" class="flex flex-wrap gap-2">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Pruning Interface -->
+                <div class="mb-3">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-indigo-300">Turn Pairs</h3>
+                        <span id="selectedTurnCount" class="text-sm text-white/70">0/0 selected</span>
+                    </div>
+                    
+                    <div id="pruningInterface" class="overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20" style="max-height: 450px;">
+                        <p class="text-indigo-400/70 italic text-center py-8 text-sm">No chats to prune yet. Add personas to merge queue in Step 2.</p>
+                    </div>
+                </div>
+                </div>
+
+                <div class="sticky-nav flex justify-between">
+                    <button id="prevStep3Btn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1.5 px-3 rounded-lg transition duration-200 shadow-md text-sm">
+                        ⬅️ Back
+                    </button>
+                    <button id="nextStep3Btn" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-sm">
+                        Next: Generate & Export ➔
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 4: Generate & Export -->
+            <div id="step4" class="panel inactive-right">
+                <div class="panel-content">
+                    <h2 class="text-xl font-bold text-indigo-300 mb-4">💎 Step 4: Generate & Export</h2>
+
+                    <!-- Preamble Configuration -->
+                <div class="mb-4">
+                    <label class="block text-indigo-200/90 mb-1">Target Platform</label>
+                    <select id="targetPlatformSelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
+                        <!-- Options populated by JS -->
+                    </select>
+
+                    <label class="block text-indigo-200/90 mb-1">Transfer Mode</label>
+                    <select id="transferModeSelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
+                        <option value="TRANSFER">🚀 TRANSFER (High Intensity / Cross-Platform)</option>
+                        <option value="CONTINUITY">🔄 CONTINUITY (Low Intensity / Same-Platform)</option>
+                    </select>
+
+                    <label class="block text-indigo-200/90 mb-1">Google Drive File URL (Recommended)</label>
+                    <div class="flex space-x-2 mb-3">
+                        <input type="text" id="googleDriveUrlInput" placeholder="https://drive.google.com/file/d/..." class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md">
+                        <button id="saveGoogleDriveUrlBtn" class="bg-indigo-700/70 hover:bg-indigo-600/90 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md text-sm" title="Save URL for future sessions">
+                            💾 Save
+                        </button>
+                    </div>
+                    <p class="text-xs text-white/50 italic mb-3">💡 Tip: Using Google Drive avoids chat length limits and ensures perfect fidelity</p>
+                    
+                    <label class="block text-indigo-200/90 mb-2">Preamble Preview</label>
+                    <textarea id="preamblePreview" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3 h-32 text-sm resize-none" readonly></textarea>
+                </div>
+
+                <!-- Export Options -->
+                <div class="space-y-2 mb-4">
+                    <h3 class="font-semibold text-indigo-300 mb-2">📦 Export Master Transcript</h3>
+                    
+                    <button id="downloadMarkdownBtn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-xl shadow-green-500/30 text-lg">
+                        <span class="text-xl">💎</span> Download Markdown File
+                    </button>
+                    
+                    <button id="copyToClipboardBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
+                        📋 Copy to Clipboard
+                    </button>
+                    
+                    <p class="text-xs text-white/50 italic text-center mt-2">Upload the markdown file to Google Drive, then paste the share link above</p>
+                </div>
+                </div>
+
+                <div class="sticky-nav flex justify-between">
+                    <button id="prevStep4Btn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1.5 px-3 rounded-lg transition duration-200 shadow-md text-sm">
+                        ⬅️ Back
+                    </button>
+                    <button id="startOverBtn" class="bg-indigo-900/70 hover:bg-indigo-800 text-white font-bold py-1.5 px-3 rounded-lg transition duration-200 shadow-md text-sm" title="Return to Step 1 and start a new workflow">
+                        🔄 Start Over
+                    </button>
+                </div>
+            </div>
+
+        </div> <!-- End Panel Wrapper -->
+
+    </div> <!-- End App Container -->
+
+    <!-- Load the external logic script -->
+    <script src="popup.js"></script> 
+</body>
+</html>

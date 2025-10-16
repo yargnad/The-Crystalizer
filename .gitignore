@@ -1,0 +1,38 @@
+# Node modules (if any)
+node_modules/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Build artifacts (if any)
+dist/
+build/
+
+# Environment files
+.env
+.env.local
+
+# Chrome extension temporary files
+*.pem
+*.crx
+
+# Backup files
+*.bak
+*~
+
+# Development helpers (keep generate-icons.html)

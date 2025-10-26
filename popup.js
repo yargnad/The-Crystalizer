@@ -356,6 +356,10 @@ function attachGlobalListeners() {
         updateStatus('🔄 Reset to Step 1 (your data is preserved)', 'info');
     });
     
+    // Floating Queue Toggle
+    document.getElementById('queueToggle')?.addEventListener('click', toggleFloatingQueue);
+    document.getElementById('closeQueueBtn')?.addEventListener('click', toggleFloatingQueue);
+    
     // Sequential Flow Buttons - Use event delegation on body to handle dynamic visibility
     document.body.addEventListener('click', (e) => {
         const target = e.target.closest('button');
@@ -413,6 +417,7 @@ function attachGlobalListeners() {
     document.getElementById('targetPlatformSelect')?.addEventListener('change', updatePreamblePreview);
     document.getElementById('downloadMarkdownBtn')?.addEventListener('click', downloadMarkdown);
     document.getElementById('copyToClipboardBtn')?.addEventListener('click', copyToClipboard);
+    document.getElementById('saveAsMergedPersonaBtn')?.addEventListener('click', saveAsMergedPersona);
 }
 
 // --- Sequential Flow Management ---
@@ -463,6 +468,16 @@ function gotoStep(stepNumber, save = true) {
     
     // Step-specific actions
     if (stepNumber === 2) {
+        // Update next button text based on queue size
+        const nextStep2Btn = document.getElementById('nextStep2Btn');
+        if (nextStep2Btn) {
+            if (mergeQueue.length <= 1) {
+                nextStep2Btn.textContent = 'Next: Review & Prune ➔';
+            } else {
+                nextStep2Btn.textContent = 'Next: Merge & Prune ➔';
+            }
+        }
+        
         // Only run detection if merge queue is empty (i.e., user wants to scrape new chat)
         // If queue has personas, they're already loaded and ready
         if (mergeQueue.length === 0) {
@@ -473,13 +488,25 @@ function gotoStep(stepNumber, save = true) {
     }
     
     if (stepNumber === 3) {
-        // Update step title based on queue size
+        // Update step title and merge options based on queue size
         const step3Title = document.querySelector('#step3 h2');
-        if (step3Title) {
-            if (mergeQueue.length <= 1) {
+        const mergeOptionsSection = document.getElementById('mergeOptionsSection');
+        
+        if (mergeQueue.length <= 1) {
+            // Single persona mode
+            if (step3Title) {
                 step3Title.textContent = '📋 Step 3: Review & Prune';
-            } else {
+            }
+            if (mergeOptionsSection) {
+                mergeOptionsSection.style.display = 'none';
+            }
+        } else {
+            // Multi-persona merge mode
+            if (step3Title) {
                 step3Title.textContent = '✂️ Step 3: Merge & Prune';
+            }
+            if (mergeOptionsSection) {
+                mergeOptionsSection.style.display = 'block';
             }
         }
         
@@ -936,6 +963,19 @@ function renderMergeQueue(queueIds) {
     
     countElement.textContent = `${queueIds.length} chat${queueIds.length !== 1 ? 's' : ''} selected`;
     
+    // Update Step 2 next button text based on queue size
+    const nextStep2Btn = document.getElementById('nextStep2Btn');
+    if (nextStep2Btn) {
+        if (queueIds.length <= 1) {
+            nextStep2Btn.textContent = 'Next: Review & Prune ➔';
+        } else {
+            nextStep2Btn.textContent = 'Next: Merge & Prune ➔';
+        }
+    }
+    
+    // Update floating queue sidebar
+    updateFloatingQueue(queueIds);
+    
     if (queueIds.length === 0) {
         container.innerHTML = '<p class="text-indigo-400/70 italic text-center py-4 text-sm">No chats in merge queue. Check "Add to Merge Queue" when saving personas.</p>';
         return;
@@ -1014,6 +1054,64 @@ function toggleConfigurator() {
         section.classList.add('hidden');
         icon.classList.remove('rotate-90');
     }
+}
+
+function toggleFloatingQueue() {
+    const floatingQueue = document.getElementById('floatingMergeQueue');
+    if (!floatingQueue) return;
+    
+    floatingQueue.classList.toggle('collapsed');
+}
+
+function updateFloatingQueue(queueIds) {
+    const container = document.getElementById('floatingQueueList');
+    const countBadge = document.getElementById('floatingQueueCount');
+    
+    if (!container || !countBadge) return;
+    
+    countBadge.textContent = queueIds.length;
+    
+    if (queueIds.length === 0) {
+        container.innerHTML = '<p class="text-indigo-400/70 italic text-center py-4 text-xs">No personas in queue</p>';
+        return;
+    }
+    
+    container.innerHTML = '';
+    
+    queueIds.forEach((id, index) => {
+        const persona = storedPersonas.find(p => p.id === id);
+        if (!persona) return;
+        
+        const colorClass = `persona-color-${storedPersonas.indexOf(persona) % 8}`;
+        
+        const card = document.createElement('div');
+        card.className = `p-2 mb-2 rounded-md border border-indigo-700/50 bg-indigo-900/30 ${colorClass}`;
+        card.innerHTML = `
+            <div class="flex justify-between items-start">
+                <div class="flex-1 min-w-0">
+                    <p class="text-xs font-bold text-white truncate">${persona.name}</p>
+                    <p class="text-xs text-white/50">${persona.exchangeCount || persona.exchanges.length} ex.</p>
+                </div>
+                <div class="flex flex-col items-center ml-2">
+                    <button class="floating-remove-btn text-xs text-red-400 hover:text-red-300" data-id="${id}">✕</button>
+                </div>
+            </div>
+        `;
+        
+        container.appendChild(card);
+    });
+    
+    // Attach remove handlers
+    container.querySelectorAll('.floating-remove-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            mergeQueue = mergeQueue.filter(qid => qid !== id);
+            Storage.set({ [MERGE_QUEUE_KEY]: mergeQueue }, () => {
+                renderMergeQueue(mergeQueue);
+                updateStatus('Removed from merge queue', 'info');
+            });
+        });
+    });
 }
 
 
@@ -1811,14 +1909,180 @@ function restorePruningProgress() {
 }
 
 
-// --- Export Functions (Placeholder - implement tomorrow) ---
+// --- Export Functions ---
 
 function downloadMarkdown() {
-    updateStatus('🚧 Markdown export coming tomorrow!', 'info');
+    if (!prunedExchanges || prunedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges to export', 'warning');
+        return;
+    }
+    
+    // Filter only selected exchanges
+    const selectedExchanges = prunedExchanges.filter(ex => ex.selected !== false);
+    
+    if (selectedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges selected', 'warning');
+        return;
+    }
+    
+    // Generate markdown content
+    let markdown = `# 💎 Crystalizer Master Transcript\n\n`;
+    markdown += `**Generated:** ${new Date().toLocaleString()}\n\n`;
+    markdown += `**Total Exchanges:** ${selectedExchanges.length}\n\n`;
+    markdown += `---\n\n`;
+    
+    selectedExchanges.forEach((exchange, index) => {
+        const timestamp = exchange.timestamp ? new Date(exchange.timestamp).toLocaleString() : 'No timestamp';
+        
+        markdown += `## Exchange ${index + 1}\n\n`;
+        markdown += `*${timestamp}*\n\n`;
+        
+        if (exchange.user && exchange.user.trim()) {
+            markdown += `### 👤 User\n\n`;
+            markdown += `${exchange.user}\n\n`;
+        }
+        
+        if (exchange.assistant && exchange.assistant.trim()) {
+            markdown += `### 🤖 Assistant\n\n`;
+            markdown += `${exchange.assistant}\n\n`;
+        }
+        
+        markdown += `---\n\n`;
+    });
+    
+    // Add footer
+    markdown += `\n*Generated by Crystalizer Context Curator*\n`;
+    
+    // Create download
+    const blob = new Blob([markdown], { type: 'text/markdown;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `crystalizer_transcript_${Date.now()}.md`;
+    
+    setTimeout(() => {
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+        updateStatus(`💾 Downloaded ${selectedExchanges.length} exchanges as markdown`, 'success');
+    }, 0);
 }
 
 function copyToClipboard() {
-    updateStatus('🚧 Clipboard copy coming tomorrow!', 'info');
+    if (!prunedExchanges || prunedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges to copy', 'warning');
+        return;
+    }
+    
+    // Filter only selected exchanges
+    const selectedExchanges = prunedExchanges.filter(ex => ex.selected !== false);
+    
+    if (selectedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges selected', 'warning');
+        return;
+    }
+    
+    // Generate plain text content
+    let text = `� CRYSTALIZER MASTER TRANSCRIPT\n`;
+    text += `Generated: ${new Date().toLocaleString()}\n`;
+    text += `Total Exchanges: ${selectedExchanges.length}\n`;
+    text += `${'='.repeat(80)}\n\n`;
+    
+    selectedExchanges.forEach((exchange, index) => {
+        const timestamp = exchange.timestamp ? new Date(exchange.timestamp).toLocaleString() : 'No timestamp';
+        
+        text += `EXCHANGE ${index + 1}\n`;
+        text += `Time: ${timestamp}\n`;
+        text += `${'-'.repeat(80)}\n\n`;
+        
+        if (exchange.user && exchange.user.trim()) {
+            text += `👤 USER:\n${exchange.user}\n\n`;
+        }
+        
+        if (exchange.assistant && exchange.assistant.trim()) {
+            text += `🤖 ASSISTANT:\n${exchange.assistant}\n\n`;
+        }
+        
+        text += `${'='.repeat(80)}\n\n`;
+    });
+    
+    // Copy to clipboard using modern API with fallback
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+            updateStatus(`📋 Copied ${selectedExchanges.length} exchanges to clipboard!`, 'success');
+        }).catch(err => {
+            console.error('Clipboard copy failed:', err);
+            fallbackCopyToClipboard(text);
+        });
+    } else {
+        fallbackCopyToClipboard(text);
+    }
+}
+
+function fallbackCopyToClipboard(text) {
+    // Fallback for older browsers
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    
+    try {
+        document.execCommand('copy');
+        updateStatus('� Copied to clipboard (legacy method)', 'success');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        updateStatus('❌ Copy failed - please try again', 'error');
+    }
+    
+    document.body.removeChild(textarea);
+}
+
+function saveAsMergedPersona() {
+    if (!prunedExchanges || prunedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges to save', 'warning');
+        return;
+    }
+    
+    // Filter only selected exchanges
+    const selectedExchanges = prunedExchanges.filter(ex => ex.selected !== false);
+    
+    if (selectedExchanges.length === 0) {
+        updateStatus('⚠️ No exchanges selected', 'warning');
+        return;
+    }
+    
+    // Prompt for persona name
+    const personaName = prompt('Enter a name for this merged persona:', `Merged Persona ${Date.now()}`);
+    
+    if (!personaName || !personaName.trim()) {
+        updateStatus('❌ Save cancelled', 'info');
+        return;
+    }
+    
+    // Create new persona from selected exchanges
+    const newPersona = {
+        id: `persona-${Date.now()}`,
+        name: personaName.trim(),
+        platformId: 'merged',
+        platformName: 'Merged Context',
+        url: '',
+        timestamp: Date.now(),
+        exchanges: selectedExchanges.map(ex => ({
+            user: ex.user || '',
+            assistant: ex.assistant || '',
+            timestamp: ex.timestamp || Date.now()
+        })),
+        exchangeCount: selectedExchanges.length
+    };
+    
+    // Add to stored personas
+    storedPersonas.push(newPersona);
+    
+    Storage.set({ [STORED_PERSONAS_KEY]: storedPersonas }, () => {
+        renderPersonaLibrary(storedPersonas);
+        updateStatus(`✅ Saved "${personaName}" as persona (${selectedExchanges.length} exchanges)`, 'success');
+    });
 }
 
 

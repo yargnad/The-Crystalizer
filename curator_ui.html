@@ -77,6 +77,8 @@
         .hover\:bg-indigo-600\/70:hover { background-color: rgba(79, 70, 229, 0.7); }
         .bg-green-600 { background-color: #10b981; }
         .hover\:bg-green-500:hover { background-color: #34d399; }
+        .bg-purple-600 { background-color: #9333ea; }
+        .hover\:bg-purple-500:hover { background-color: #a855f7; }
         .bg-red-700\/70 { background-color: rgba(185, 28, 28, 0.7); }
         .hover\:bg-red-600\/90:hover { background-color: rgba(220, 38, 38, 0.9); }
         .bg-indigo-900\/50 { background-color: rgba(30, 27, 49, 0.5); }
@@ -274,6 +276,115 @@
             transform: translateX(4px);
         }
 
+        /* Floating Merge Queue Sidebar */
+        .floating-queue {
+            position: fixed;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .floating-queue.collapsed {
+            right: -240px;
+        }
+        
+        .floating-queue.collapsed .queue-toggle {
+            right: 240px;
+        }
+        
+        .queue-toggle {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, #4338ca 0%, #6366f1 100%);
+            color: white;
+            padding: 0.75rem 0.5rem;
+            border-radius: 0.5rem 0 0 0.5rem;
+            cursor: pointer;
+            box-shadow: -2px 2px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            min-width: 48px;
+        }
+        
+        .queue-toggle:hover {
+            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+            transform: translateY(-50%) translateX(-4px);
+        }
+        
+        .queue-toggle-icon {
+            font-size: 1.25rem;
+        }
+        
+        .queue-toggle-text {
+            font-size: 0.625rem;
+            font-weight: 600;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+        
+        .queue-badge {
+            background: #ef4444;
+            color: white;
+            font-size: 0.625rem;
+            font-weight: bold;
+            padding: 0.125rem 0.375rem;
+            border-radius: 9999px;
+            min-width: 1.25rem;
+            text-align: center;
+        }
+        
+        .queue-content {
+            width: 260px;
+            height: 400px;
+            background: linear-gradient(135deg, #1e1b31 0%, #2a2742 100%);
+            border-radius: 0.75rem 0 0 0.75rem;
+            box-shadow: -4px 4px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-right: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .queue-header {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(67, 56, 202, 0.2);
+        }
+        
+        .queue-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0.75rem;
+        }
+        
+        .queue-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .queue-list::-webkit-scrollbar-track {
+            background: rgba(30, 27, 49, 0.5);
+        }
+        
+        .queue-list::-webkit-scrollbar-thumb {
+            background: rgba(99, 102, 241, 0.5);
+            border-radius: 3px;
+        }
+        
+        .queue-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(99, 102, 241, 0.7);
+        }
+
     </style>
 </head>
 <body>
@@ -294,6 +405,24 @@
                 </div>
             </div>
         </header>
+
+        <!-- Floating Merge Queue Sidebar -->
+        <div id="floatingMergeQueue" class="floating-queue collapsed">
+            <div class="queue-toggle" id="queueToggle">
+                <span class="queue-toggle-icon">📋</span>
+                <span class="queue-toggle-text">Queue</span>
+                <span id="floatingQueueCount" class="queue-badge">0</span>
+            </div>
+            <div class="queue-content">
+                <div class="queue-header">
+                    <h3 class="text-sm font-semibold text-indigo-200">🔗 Merge Queue</h3>
+                    <button id="closeQueueBtn" class="text-white/70 hover:text-white text-xs">✕</button>
+                </div>
+                <div id="floatingQueueList" class="queue-list">
+                    <p class="text-indigo-400/70 italic text-center py-4 text-xs">No personas in queue</p>
+                </div>
+            </div>
+        </div>
 
         <!-- Dynamic Status Bar -->
         <div id="statusContainer" class="mb-3" style="flex-shrink: 0;">
@@ -546,6 +675,10 @@
                     
                     <button id="copyToClipboardBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
                         📋 Copy to Clipboard
+                    </button>
+                    
+                    <button id="saveAsMergedPersonaBtn" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
+                        💾 Save as New Persona
                     </button>
                     
                     <p class="text-xs text-white/50 italic text-center mt-2">Upload the markdown file to Google Drive, then paste the share link above</p>

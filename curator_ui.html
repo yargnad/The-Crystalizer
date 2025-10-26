@@ -11,7 +11,7 @@
             background: linear-gradient(135deg, #1a1d2e 0%, #242838 100%); /* Lighter gradient background */
             color: #e8eaf6; /* Softer white */
             width: 600px; /* Fixed width for extension popup */
-            height: 700px; /* Match browser height */
+            height: 700px; /* Reduced back for compactness */
             min-height: 700px;
             max-height: 700px;
             padding: 0;
@@ -51,15 +51,16 @@
         .mt-4 { margin-top: 1rem; }
         .mb-4 { margin-bottom: 1rem; }
         .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; } /* Added for consistency */
         .block { display: block; }
         .text-center { text-align: center; }
         .font-bold { font-weight: 700; }
         .font-semibold { font-weight: 600; }
         .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
-        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
-        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-xl { font-size: 1rem; line-height: 1.5rem; } /* Reduced from 1.25rem */
+        .text-lg { font-size: 0.95rem; line-height: 1.5rem; } /* Reduced from 1.125rem */
+        .text-sm { font-size: 0.813rem; line-height: 1.2rem; } /* Reduced */
+        .text-xs { font-size: 0.7rem; line-height: 0.95rem; } /* Reduced */
         .rounded-lg { border-radius: 0.5rem; }
         .rounded-md { border-radius: 0.375rem; }
         .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1); }
@@ -120,16 +121,22 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, #1a1d2e 85%, transparent);
-            padding: 0.5rem 0.75rem;
+            padding: 0.75rem 0; /* Reduced for compactness */
             margin-top: auto;
             z-index: 20;
             border-top: 1px solid rgba(99, 102, 241, 0.2);
         }
         
-        /* Smaller, minimal buttons */
+        /* Navigation buttons - compact */
+        .sticky-nav button {
+            font-size: 0.85rem; /* Smaller */
+            padding: 0.5rem 1rem; /* More compact */
+        }
+        
+        /* Smaller, minimal buttons for other areas */
         button {
-            font-size: 0.813rem;
-            padding: 0.375rem 0.75rem;
+            font-size: 0.75rem; /* Reduced */
+            padding: 0.3rem 0.6rem; /* Reduced */
         }
 
         /* Sequential Panel Flow Styles */
@@ -141,7 +148,7 @@
             top: 0;
             left: 0;
             opacity: 0;
-            padding: 1rem;
+            padding: 1rem; /* Reduced for compactness */
             padding-bottom: 0;
             box-sizing: border-box;
             pointer-events: none;
@@ -168,6 +175,7 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: 0.5rem;
+            padding-bottom: 0.5rem; /* Reduced for compactness */
         }
 
         /* Collapsible Config Styles */
@@ -389,14 +397,15 @@
 </head>
 <body>
     <!-- Main Application Container -->
-    <div id="appContainer" style="display: flex; flex-direction: column; height: 100%; padding: 1rem;">
+    <div id="appContainer" style="display: flex; flex-direction: column; height: 100%; padding: 0.75rem;"> <!-- Reduced padding -->
         <!-- Header -->
-        <header class="text-center mb-2" style="flex-shrink: 0; position: relative; padding: 0.5rem 1rem;">
+        <header class="text-center mb-2" style="flex-shrink: 0; position: relative; padding: 0.25rem 0.5rem;"> <!-- Reduced padding and margin -->
             <div class="flex items-center justify-between">
                 <div class="flex-1"></div>
                 <div class="flex-1 text-center">
-                    <h1 class="text-xl font-bold text-indigo-200">💎 Crystalizer</h1>
+                    <h1 class="text-lg font-bold text-indigo-200">💎 Crystalizer</h1> <!-- Reduced from text-xl -->
                     <p class="text-xs text-indigo-300/60">Universal Context Curator</p>
+                    <p class="text-xs text-indigo-400/40 italic mt-0.5">Auto-saves progress • Reopens where you left off</p>
                 </div>
                 <div class="flex-1 text-right">
                     <button id="resetToStep1Btn" class="text-xs bg-indigo-700/30 hover:bg-indigo-600/40 text-indigo-200 px-2 py-0.5 rounded transition" title="Reset to Step 1">
@@ -438,7 +447,7 @@
                     <h2 class="text-xl font-bold text-indigo-300 mb-4">💎 Step 1: Persona Library</h2>
 
                     <!-- Detected Platform Display -->
-                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-4">
+                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-3"> <!-- Increased bottom margin -->
                     <p class="text-sm text-white/70 mb-1">Current Platform Detected:</p>
                     <div class="flex items-center justify-between">
                         <span id="detectedPlatformNameStep1" class="font-bold text-indigo-300 text-lg">Detecting...</span>
@@ -447,8 +456,8 @@
                 </div>
 
                 <!-- Persona Library -->
-                <div class="mb-4">
-                    <div class="flex justify-between items-center mb-2">
+                <div class="mb-3"> <!-- Increased bottom margin -->
+                    <div class="flex justify-between items-center mb-3"> <!-- Increased bottom margin -->
                         <h3 class="font-semibold text-indigo-300">📚 Stored Personas</h3>
                         <div class="flex space-x-2">
                             <button id="importPersonaBtn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1 px-3 rounded-md transition duration-200 shadow-md text-xs" title="Import previously exported persona">
@@ -467,7 +476,7 @@
                 </div>
 
                 <!-- Collapsible Platform Configurator -->
-                <div class="mb-4">
+                <div class="mb-3"> <!-- Increased bottom margin -->
                     <button id="toggleConfiguratorBtn" class="w-full flex items-center justify-between p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 hover:bg-indigo-900/70 transition duration-200">
                         <span class="font-semibold text-indigo-300">⚙️ Platform Configurator (Advanced)</span>
                         <span id="configuratorToggleIcon" class="collapse-indicator">►</span>
@@ -512,10 +521,10 @@
             <!-- Step 2: Scrape & Store -->
             <div id="step2" class="panel inactive-right">
                 <div class="panel-content">
-                    <h2 class="text-xl font-bold text-indigo-300 mb-4">⚔️ Step 2: Scrape & Store</h2>
+                    <h2 class="text-xl font-bold text-indigo-300 mb-3">⚔️ Step 2: Scrape & Store</h2> <!-- Increased bottom margin -->
                     
                     <!-- Current Platform Info -->
-                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-4">
+                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-3"> <!-- Increased bottom margin -->
                     <p class="text-sm text-white/70 mb-1">Scraping From:</p>
                     <div class="flex items-center justify-between">
                         <span id="detectedPlatformName" class="font-bold text-indigo-300 text-lg">None detected</span>
@@ -524,12 +533,12 @@
                 </div>
 
                 <!-- Scrape Button -->
-                <button id="scrapeCurrentChatBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-lg mb-4">
+                <button id="scrapeCurrentChatBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-xl shadow-indigo-500/30 text-lg mb-3"> <!-- Increased bottom margin -->
                     <span class="text-xl">⚔️</span> Scrape Current Chat
                 </button>
 
                 <!-- Save Persona Dialog (shown after scrape) -->
-                <div id="savePersonaDialog" class="hidden mb-4 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700">
+                <div id="savePersonaDialog" class="hidden mb-3 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700"> <!-- Increased bottom margin -->
                     <h3 class="font-semibold text-indigo-300 mb-3">💾 Save as Persona</h3>
                     <input type="text" id="personaNameInput" placeholder="Enter persona name (e.g., 'Project Alpha - Gemini')" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
                     
@@ -575,10 +584,10 @@
             <!-- Step 3: Merge & Prune -->
             <div id="step3" class="panel inactive-right">
                 <div class="panel-content">
-                    <h2 class="text-xl font-bold text-indigo-300 mb-4">✂️ Step 3: Merge & Prune</h2>
+                    <h2 class="text-xl font-bold text-indigo-300 mb-3">✂️ Step 3: Merge & Prune</h2> <!-- Increased bottom margin -->
 
                     <!-- Merge Options (shown only if multiple chats in queue) -->
-                <div id="mergeOptionsSection" class="mb-4 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700">
+                <div id="mergeOptionsSection" class="mb-3 p-4 bg-indigo-900/50 rounded-lg border border-indigo-700"> <!-- Increased bottom margin -->
                     <h3 class="font-semibold text-indigo-300 mb-3">🔗 Merge Strategy</h3>
                     
                     <div class="mb-3">
@@ -604,7 +613,7 @@
                 </div>
 
                 <!-- Persona Legend (color-coded) -->
-                <div id="personaLegend" class="mb-3 p-2 bg-indigo-900/30 rounded-lg border border-indigo-700/50">
+                <div id="personaLegend" class="mb-3 p-2 bg-indigo-900/30 rounded-lg border border-indigo-700/50"> <!-- Increased bottom margin -->
                     <p class="text-xs text-white/70 mb-1">Persona Colors:</p>
                     <div id="legendItems" class="flex flex-wrap gap-2">
                         <!-- Populated dynamically -->
@@ -612,7 +621,7 @@
                 </div>
 
                 <!-- Pruning Interface -->
-                <div class="mb-3">
+                <div class="mb-3"> <!-- Increased bottom margin -->
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="font-semibold text-indigo-300">Turn Pairs</h3>
                         <span id="selectedTurnCount" class="text-sm text-white/70">0/0 selected</span>
@@ -637,10 +646,10 @@
             <!-- Step 4: Generate & Export -->
             <div id="step4" class="panel inactive-right">
                 <div class="panel-content">
-                    <h2 class="text-xl font-bold text-indigo-300 mb-4">💎 Step 4: Generate & Export</h2>
+                    <h2 class="text-xl font-bold text-indigo-300 mb-3">💎 Step 4: Generate & Export</h2> <!-- Increased bottom margin -->
 
                     <!-- Preamble Configuration -->
-                <div class="mb-4">
+                <div class="mb-3"> <!-- Increased bottom margin -->
                     <label class="block text-indigo-200/90 mb-1">Target Platform</label>
                     <select id="targetPlatformSelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
                         <!-- Options populated by JS -->
@@ -652,17 +661,10 @@
                         <option value="CONTINUITY">🔄 CONTINUITY (Low Intensity / Same-Platform)</option>
                     </select>
 
-                    <label class="block text-indigo-200/90 mb-1">Google Drive File URL (Recommended)</label>
-                    <div class="flex space-x-2 mb-3">
-                        <input type="text" id="googleDriveUrlInput" placeholder="https://drive.google.com/file/d/..." class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md">
-                        <button id="saveGoogleDriveUrlBtn" class="bg-indigo-700/70 hover:bg-indigo-600/90 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md text-sm" title="Save URL for future sessions">
-                            💾 Save
-                        </button>
-                    </div>
-                    <p class="text-xs text-white/50 italic mb-3">💡 Tip: Using Google Drive avoids chat length limits and ensures perfect fidelity</p>
-                    
                     <label class="block text-indigo-200/90 mb-2">Preamble Preview</label>
                     <textarea id="preamblePreview" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3 h-32 text-sm resize-none" readonly></textarea>
+                    
+                    <p class="text-xs text-white/50 italic mb-3">💡 <strong>Workflow:</strong> Download markdown → Upload as attachment to AI → Copy & paste preamble in chat</p>
                 </div>
 
                 <!-- Export Options -->
@@ -674,14 +676,14 @@
                     </button>
                     
                     <button id="copyToClipboardBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
-                        📋 Copy to Clipboard
+                        📋 Copy Preamble to Clipboard
                     </button>
                     
                     <button id="saveAsMergedPersonaBtn" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-bold py-2 px-4 rounded-lg transition duration-200 shadow-md">
                         💾 Save as New Persona
                     </button>
                     
-                    <p class="text-xs text-white/50 italic text-center mt-2">Upload the markdown file to Google Drive, then paste the share link above</p>
+                    <p class="text-xs text-white/50 italic text-center mt-2">📎 <strong>To transfer context:</strong> Download markdown → Upload file as attachment to AI → Paste preamble from clipboard</p>
                 </div>
                 </div>
 

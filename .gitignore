@@ -36,3 +36,17 @@ build/
 *~
 
 # Development helpers (keep generate-icons.html)
+
+# Test/sample HTML files from ChatGPT/Gemini/Perplexity/Mistral etc
+*.htm
+chatgpt.html
+perplexity.html
+Le Chat.html
+Next*.html
+Next*.htm
+
+# Preamble documentation files
+*preamble.md
+ChatGPT preamble.md
+Perplexity preamble.md
+Mistral preamble.md

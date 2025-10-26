@@ -114,17 +114,22 @@
         .overflow-hidden { overflow: hidden; }
         .transform { transform: var(--tw-transform); }
 
-        /* Sticky Navigation Buttons */
+        /* Sticky Navigation Buttons - always visible at panel bottom */
         .sticky-nav {
             position: sticky;
             bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, #1a1d2e 85%, transparent);
-            padding: 0.75rem 0; /* Reduced for compactness */
-            margin-top: auto;
+            left: -0.5rem;
+            right: -0.5rem;
+            background: linear-gradient(to top, #1a1d2e 95%, rgba(26, 29, 46, 0.8));
+            padding: 0.5rem; /* Minimal padding */
+            margin-top: auto; /* Pushes to bottom of flex container */
+            margin-left: -0.5rem;
+            margin-right: -0.5rem;
             z-index: 20;
             border-top: 1px solid rgba(99, 102, 241, 0.2);
+            flex-shrink: 0; /* Prevents shrinking */
+            height: 50px; /* Smaller fixed height */
+            box-sizing: border-box;
         }
         
         /* Navigation buttons - compact */
@@ -142,13 +147,15 @@
         /* Sequential Panel Flow Styles */
         .panel {
             width: 100%;
-            height: 100%;
+            flex: 1;
             transition: transform 0.5s ease-in-out, opacity 0.3s ease-in-out;
             position: absolute;
             top: 0;
+            bottom: 0;
             left: 0;
+            right: 0;
             opacity: 0;
-            padding: 1rem; /* Reduced for compactness */
+            padding: 0.5rem; /* Much smaller padding */
             padding-bottom: 0;
             box-sizing: border-box;
             pointer-events: none;
@@ -175,7 +182,8 @@
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: 0.5rem;
-            padding-bottom: 0.5rem; /* Reduced for compactness */
+            padding-bottom: 1rem; /* Space for sticky nav */
+            min-height: 0; /* Allow flex shrinking */
         }
 
         /* Collapsible Config Styles */
@@ -397,22 +405,17 @@
 </head>
 <body>
     <!-- Main Application Container -->
-    <div id="appContainer" style="display: flex; flex-direction: column; height: 100%; padding: 0.75rem;"> <!-- Reduced padding -->
+    <div id="appContainer" style="display: flex; flex-direction: column; height: 100%; padding: 0.25rem;"> <!-- Minimal padding -->
         <!-- Header -->
-        <header class="text-center mb-2" style="flex-shrink: 0; position: relative; padding: 0.25rem 0.5rem;"> <!-- Reduced padding and margin -->
-            <div class="flex items-center justify-between">
-                <div class="flex-1"></div>
-                <div class="flex-1 text-center">
-                    <h1 class="text-lg font-bold text-indigo-200">💎 Crystalizer</h1> <!-- Reduced from text-xl -->
-                    <p class="text-xs text-indigo-300/60">Universal Context Curator</p>
-                    <p class="text-xs text-indigo-400/40 italic mt-0.5">Auto-saves progress • Reopens where you left off</p>
-                </div>
-                <div class="flex-1 text-right">
-                    <button id="resetToStep1Btn" class="text-xs bg-indigo-700/30 hover:bg-indigo-600/40 text-indigo-200 px-2 py-0.5 rounded transition" title="Reset to Step 1">
-                        🔄
-                    </button>
-                </div>
+        <header class="text-center mb-1" style="flex-shrink: 0; position: relative; padding: 0;"> <!-- Removed all padding and minimal margin -->
+            <div class="text-center">
+                <h1 class="text-base font-bold text-indigo-200">💎 Crystalizer</h1> <!-- Even smaller -->
+                <p class="text-xs text-indigo-300/60">Universal Context Curator</p>
+                <p class="text-xs text-indigo-400/40 italic">Auto-saves progress • Reopens where you left off</p> <!-- Removed margin -->
             </div>
+            <button id="resetToStep1Btn" class="text-xs bg-indigo-700/30 hover:bg-indigo-600/40 text-indigo-200 px-2 py-0.5 rounded transition absolute top-0 right-0" title="Reset to Step 1" style="position: absolute; top: 0; right: 0;">
+                🔄
+            </button>
         </header>
 
         <!-- Floating Merge Queue Sidebar -->
@@ -434,31 +437,31 @@
         </div>
 
         <!-- Dynamic Status Bar -->
-        <div id="statusContainer" class="mb-3" style="flex-shrink: 0;">
-            <p id="detectionStatus" class="text-center font-bold text-lg text-indigo-400">Loading configurations...</p>
+        <div id="statusContainer" class="mb-1" style="flex-shrink: 0;"> <!-- Minimal margin -->
+            <p id="detectionStatus" class="text-center font-bold text-sm text-indigo-400">Loading configurations...</p> <!-- Smaller text -->
         </div>
         
         <!-- Sequential Panel Wrapper -->
-        <div id="panelWrapper" class="relative" style="flex: 1; overflow: hidden; min-height: 0;">
+        <div id="panelWrapper" class="relative" style="flex: 1; overflow: hidden; min-height: 0; display: flex; flex-direction: column;">
             
             <!-- Step 1: Persona Management & Configuration -->
             <div id="step1" class="panel active">
                 <div class="panel-content">
-                    <h2 class="text-xl font-bold text-indigo-300 mb-4">💎 Step 1: Persona Library</h2>
+                    <h2 class="text-base font-bold text-indigo-300 mb-1">💎 Step 1: Persona Library</h2> <!-- Smaller text and margin -->
 
                     <!-- Detected Platform Display -->
-                <div class="p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-3"> <!-- Increased bottom margin -->
-                    <p class="text-sm text-white/70 mb-1">Current Platform Detected:</p>
+                <div class="p-2 bg-indigo-900/50 rounded-lg border border-indigo-700/50 mb-2"> <!-- Reduced padding and margin -->
+                    <p class="text-xs text-white/70 mb-0.5">Current Platform Detected:</p> <!-- Smaller text -->
                     <div class="flex items-center justify-between">
-                        <span id="detectedPlatformNameStep1" class="font-bold text-indigo-300 text-lg">Detecting...</span>
+                        <span id="detectedPlatformNameStep1" class="font-bold text-indigo-300 text-sm">Detecting...</span> <!-- Smaller -->
                         <span id="detectedPlatformIdStep1" class="italic text-xs text-white/50"></span>
                     </div>
                 </div>
 
                 <!-- Persona Library -->
-                <div class="mb-3"> <!-- Increased bottom margin -->
-                    <div class="flex justify-between items-center mb-3"> <!-- Increased bottom margin -->
-                        <h3 class="font-semibold text-indigo-300">📚 Stored Personas</h3>
+                <div class="mb-2"> <!-- Reduced margin -->
+                    <div class="flex justify-between items-center mb-2"> <!-- Reduced margin -->
+                        <h3 class="font-semibold text-indigo-300 text-sm">📚 Stored Personas</h3> <!-- Smaller -->
                         <div class="flex space-x-2">
                             <button id="importPersonaBtn" class="bg-indigo-700/50 hover:bg-indigo-600/70 text-white font-bold py-1 px-3 rounded-md transition duration-200 shadow-md text-xs" title="Import previously exported persona">
                                 📥 Import
@@ -470,20 +473,20 @@
                         </div>
                     </div>
                     
-                    <div id="personaLibrary" class="max-h-64 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20">
+                    <div id="personaLibrary" class="max-h-48 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20">
                         <p class="text-indigo-400/70 italic text-center py-8 text-sm">No stored personas yet. Scrape a chat in Step 2 to create your first persona!</p>
                     </div>
                 </div>
 
                 <!-- Collapsible Platform Configurator -->
-                <div class="mb-3"> <!-- Increased bottom margin -->
-                    <button id="toggleConfiguratorBtn" class="w-full flex items-center justify-between p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50 hover:bg-indigo-900/70 transition duration-200">
-                        <span class="font-semibold text-indigo-300">⚙️ Platform Configurator (Advanced)</span>
+                <div class="mb-1">
+                    <button id="toggleConfiguratorBtn" class="w-full flex items-center justify-between p-2 bg-indigo-900/50 rounded-lg border border-indigo-700/50 hover:bg-indigo-900/70 transition duration-200">
+                        <span class="font-semibold text-indigo-300 text-sm">⚙️ Platform Configurator (Advanced)</span>
                         <span id="configuratorToggleIcon" class="collapse-indicator">►</span>
                     </button>
                     
-                    <div id="configuratorSection" class="hidden mt-2">
-                        <div class="flex items-center justify-between mb-3 p-3 bg-indigo-900/50 rounded-lg border border-indigo-700/50">
+                    <div id="configuratorSection" class="hidden mt-1">
+                        <div class="flex items-center justify-between mb-2 p-2 bg-indigo-900/50 rounded-lg border border-indigo-700/50">
                             <span class="font-semibold text-sm">Auto-Detect Platform</span>
                             <label class="toggle-switch">
                                 <input type="checkbox" id="autoDetectToggle">
@@ -498,7 +501,7 @@
                             </button>
                         </div>
                         
-                        <div id="configuratorBody" class="space-y-2 max-h-48 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20 mb-3">
+                        <div id="configuratorBody" class="space-y-2 max-h-48 overflow-y-auto p-2 border border-indigo-700/50 rounded-lg bg-indigo-900/20 mb-2">
                             <p class="text-center text-sm text-white/50 py-4">Loading configuration list...</p>
                         </div>
 
@@ -668,7 +671,7 @@
                 </div>
 
                 <!-- Export Options -->
-                <div class="space-y-2 mb-4">
+                <div class="space-y-2 mb-2">
                     <h3 class="font-semibold text-indigo-300 mb-2">📦 Export Master Transcript</h3>
                     
                     <button id="downloadMarkdownBtn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-xl shadow-green-500/30 text-lg">
@@ -705,3 +708,4 @@
     <script src="popup.js"></script> 
 </body>
 </html>
+

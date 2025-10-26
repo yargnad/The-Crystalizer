@@ -53,9 +53,11 @@ A Wabi-Sabi inspired Chrome extension for curating, merging, and transferring LL
 ## 🛠️ Technical Details
 
 ### Supported Platforms
-- Google Gemini
+- Google Gemini (with updated file-upload preamble)
 - ChatGPT (OpenAI)
 - Claude (Anthropic)
+- Perplexity AI
+- Mistral AI
 - Custom platforms (configurable)
 
 ### Architecture
@@ -67,10 +69,11 @@ A Wabi-Sabi inspired Chrome extension for curating, merging, and transferring LL
 
 ### Key Files
 - `manifest.json` - Extension configuration
-- `popup.js` - Main application logic (~1850 lines)
-- `curator_ui.html` - UI and styling (~570 lines)
+- `popup.js` - Main application logic (~2246 lines)
+- `curator_ui.html` - UI and styling (~712 lines)
 - `content_script.js` - Page scraping logic
 - `icons/` - Extension icons (💎 emoji-based)
+- `Gemini preamble.md` - Reference preamble for Gemini transfers
 
 ## 🎨 Design Philosophy
 
@@ -108,15 +111,15 @@ crystalizer-curator/
 
 ## 🐛 Known Issues
 
-None currently! See [SESSION_SUMMARY_OCT15.md](SESSION_SUMMARY_OCT15.md) for latest status.
+- Navigation buttons require scrolling on Step 1 when persona library is expanded (cosmetic only, fully functional)
 
 ## 📋 Roadmap
 
-- [ ] Floating collapsible merge queue panel
-- [ ] Enhanced export functionality
-- [ ] Keyboard shortcuts
+- [ ] Fix navigation button visibility without scrolling
+- [ ] Enhanced keyboard shortcuts
+- [ ] Batch persona operations
 - [ ] More platform support
-- [ ] Batch operations
+- [ ] Advanced filtering options
 
 ## 🤝 Contributing
 
@@ -140,6 +143,6 @@ For issues or questions, please open an issue on GitHub.
 
 ---
 
-**Status:** v1.3 - Stable and functional ✅
+**Status:** v1.21 - Stable and fully functional ✅
 
 Made with 💎 and Wabi-Sabi spirit

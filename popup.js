@@ -1898,7 +1898,7 @@ function createTurnPairCard(exchange, index) {
             <!-- User message -->
             ${userText ? `
             <div class="flex items-start gap-2 p-2 rounded bg-emerald-900/40 border border-emerald-700/50 ${!exchange.userSelected ? 'opacity-40' : ''}">
-                <input type="checkbox" class="user-checkbox w-4 h-4 cursor-pointer flex-shrink-0 mt-0.5" ${exchange.userSelected ? 'checked' : ''}>
+                <input type="checkbox" class="user-checkbox w-4 h-4 cursor-pointer flex-shrink-0" ${exchange.userSelected ? 'checked' : ''}>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-baseline gap-2">
                         <span class="text-xs font-bold text-emerald-300 flex-shrink-0">👤 User:</span>
@@ -1911,7 +1911,7 @@ function createTurnPairCard(exchange, index) {
             <!-- Assistant message -->
             ${assistantText ? `
             <div class="flex items-start gap-2 p-2 rounded bg-blue-900/40 border border-blue-700/50 ${!exchange.assistantSelected ? 'opacity-40' : ''}">
-                <input type="checkbox" class="assistant-checkbox w-4 h-4 cursor-pointer flex-shrink-0 mt-0.5" ${exchange.assistantSelected ? 'checked' : ''}>
+                <input type="checkbox" class="assistant-checkbox w-4 h-4 cursor-pointer flex-shrink-0" ${exchange.assistantSelected ? 'checked' : ''}>
                 <div class="flex-1 min-w-0">
                     <div class="flex items-baseline gap-2">
                         <span class="text-xs font-bold text-blue-300 flex-shrink-0">🤖 Assistant:</span>

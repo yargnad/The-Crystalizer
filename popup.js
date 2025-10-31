@@ -981,6 +981,11 @@ function savePersona() {
         
         const queueMsg = addToQueue ? ' and added to merge queue' : '';
         updateStatus(`💾 Persona "${name}" saved${queueMsg}!`, 'success');
+        
+        // Archive to IndexedDB (if available)
+        if (typeof archivePersona === 'function') {
+            archivePersona(persona).catch(err => console.error('Error archiving:', err));
+        }
     });
 }
 

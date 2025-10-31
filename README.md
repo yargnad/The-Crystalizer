@@ -4,12 +4,16 @@ A Wabi-Sabi inspired Chrome extension for curating, merging, and transferring LL
 
 ## ✨ Features
 
-- **🔍 Auto-detect** LLM platforms (Google Gemini, ChatGPT, Claude, etc.)
+- **🔍 Auto-detect** LLM platforms (Google Gemini, ChatGPT, Claude, Perplexity, Mistral)
 - **📥 Scrape** conversation histories with one click
 - **📚 Manage** multiple conversation personas
-- **🔗 Merge** conversations chronologically or manually
+- **🗄️ Archive** chats with IndexedDB for persistent storage
+- **� Search** archived chats by label, content, platform, or date
+- **📊 Export** to SQLite database for offline querying
+- **�🔗 Merge** conversations chronologically or manually
 - **✂️ Prune** unwanted exchanges with visual chat interface
 - **💾 Export** to markdown with Google Drive integration
+- **✨ Habit-Stack** capture 3 canonical facts after each save
 - **🎨 Beautiful UI** with Wabi-Sabi aesthetic
 
 ## 🚀 Installation
@@ -32,11 +36,20 @@ A Wabi-Sabi inspired Chrome extension for curating, merging, and transferring LL
 - Import/Export personas
 - Configure platform scrapers (Advanced)
 
+### Step 1.5: Archive & Search (NEW!)
+- **Search** archived chats by label, title, or content
+- **Filter** by platform, date range
+- **View** full chat history in beautiful modal
+- **Export** to SQLite database or JSON
+- **Monitor** storage usage and quota
+
 ### Step 2: Scrape & Store
 - Navigate to an LLM chat page (Gemini, ChatGPT, etc.)
 - Click "Scrape Current Chat"
 - Name and save as a persona
+- **Capture 3 canonical facts** for habit-stacking
 - Optionally add to merge queue
+- Auto-archives to IndexedDB
 
 ### Step 3: Merge & Prune
 - Select merge strategy (Chronological, Manual, By Platform)
@@ -63,17 +76,31 @@ A Wabi-Sabi inspired Chrome extension for curating, merging, and transferring LL
 ### Architecture
 - **Manifest V3** Chrome Extension
 - **Vanilla JavaScript** (no frameworks)
-- **Persistent storage** via chrome.storage.local
+- **Dual Storage System**:
+  - `chrome.storage.local` for personas and queue
+  - **IndexedDB** (via Dexie.js) for chat archival
+- **SQLite Export** via sql.js for offline database
 - **Content scripts** for page scraping
 - **Auto-save** for seamless session recovery
 
 ### Key Files
 - `manifest.json` - Extension configuration
 - `popup.js` - Main application logic (~2246 lines)
-- `curator_ui.html` - UI and styling (~712 lines)
+- `curator_ui.html` - UI and styling (~817 lines)
 - `content_script.js` - Page scraping logic
+- `storage_manager.js` - IndexedDB archival system (NEW)
+- `sqlite_exporter.js` - SQLite export functionality (NEW)
+- `archive_integration.js` - Archive UI integration (NEW)
 - `icons/` - Extension icons (💎 emoji-based)
 - `Gemini preamble.md` - Reference preamble for Gemini transfers
+
+### New Features (v1.22)
+- **Chat Archival**: All saved personas automatically archived to IndexedDB
+- **Full-Text Search**: Search across all archived chats by any text
+- **SQLite Export**: Download your entire archive as a queryable .db file
+- **Habit-Stack Integration**: Capture 3 canonical facts after each save
+- **Storage Monitoring**: Track usage and get warnings before hitting limits
+- **Rich Chat Viewer**: View full conversation history in beautiful modal
 
 ## 🎨 Design Philosophy
 
@@ -143,6 +170,6 @@ For issues or questions, please open an issue on GitHub.
 
 ---
 
-**Status:** v1.21 - Stable and fully functional ✅
+**Status:** v1.22 - Enhanced with archival system and offline search! 🗄️✅
 
 Made with 💎 and Wabi-Sabi spirit

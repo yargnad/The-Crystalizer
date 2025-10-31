@@ -1,5 +1,6 @@
 // Global state keys
 const AUTO_DETECT_KEY = 'isAutoDetectEnabled';
+const HABIT_STACK_KEY = 'isHabitStackEnabled';
 const CONFIG_KEY = 'llmConfigs';
 const TRANSFER_MODE_KEY = 'transferMode';
 const STORED_PERSONAS_KEY = 'storedPersonas'; // Changed from storedChats
@@ -234,7 +235,7 @@ function updateStatus(message, type = 'info') {
 
 function guaranteeInitialization() {
     return new Promise(resolve => {
-        Storage.get([CONFIG_KEY, AUTO_DETECT_KEY, TRANSFER_MODE_KEY, CURRENT_STEP_KEY], (result) => {
+        Storage.get([CONFIG_KEY, AUTO_DETECT_KEY, HABIT_STACK_KEY, TRANSFER_MODE_KEY, CURRENT_STEP_KEY], (result) => {
             const updates = {};
             let changed = false;
 
@@ -276,6 +277,11 @@ function guaranteeInitialization() {
                 changed = true;
             }
 
+            if (result[HABIT_STACK_KEY] === undefined) {
+                updates[HABIT_STACK_KEY] = false; // Default to OFF
+                changed = true;
+            }
+
             if (result[TRANSFER_MODE_KEY] === undefined) {
                 updates[TRANSFER_MODE_KEY] = 'TRANSFER';
                 changed = true;
@@ -299,7 +305,7 @@ async function loadAppState() {
     try {
         await guaranteeInitialization();
 
-        Storage.get([CONFIG_KEY, AUTO_DETECT_KEY, TRANSFER_MODE_KEY, STORED_PERSONAS_KEY, MERGE_QUEUE_KEY, CURRENT_STEP_KEY, LAST_CONFIG_ID_KEY, LAST_SCRAPED_DATA_KEY, PRUNED_EXCHANGES_KEY], (result) => {
+        Storage.get([CONFIG_KEY, AUTO_DETECT_KEY, HABIT_STACK_KEY, TRANSFER_MODE_KEY, STORED_PERSONAS_KEY, MERGE_QUEUE_KEY, CURRENT_STEP_KEY, LAST_CONFIG_ID_KEY, LAST_SCRAPED_DATA_KEY, PRUNED_EXCHANGES_KEY], (result) => {
             console.log('[loadAppState] Loaded storage:', result);
             
             llmConfigs = result[CONFIG_KEY] || DEFAULT_CONFIGURATIONS;
@@ -329,6 +335,10 @@ async function loadAppState() {
             // Initialize Auto-Detect Toggle
             const isAutoDetectEnabled = result[AUTO_DETECT_KEY] !== undefined ? result[AUTO_DETECT_KEY] : true;
             initAutoDetectToggle(isAutoDetectEnabled);
+            
+            // Initialize Habit-Stack Toggle
+            const isHabitStackEnabled = result[HABIT_STACK_KEY] !== undefined ? result[HABIT_STACK_KEY] : false;
+            initHabitStackToggle(isHabitStackEnabled);
             
             // Attach global listeners FIRST
             attachGlobalListeners();
@@ -1183,6 +1193,20 @@ function initAutoDetectToggle(isAutoDetectEnabled) {
         const newState = toggle.checked;
         Storage.set({ [AUTO_DETECT_KEY]: newState }, () => {
             updateStatus(`Auto-Detect set to: ${newState ? 'ON' : 'OFF'}`, 'info');
+        });
+    });
+}
+
+function initHabitStackToggle(isHabitStackEnabled) {
+    const toggle = document.getElementById('habitStackToggle');
+    if (!toggle) return;
+
+    toggle.checked = isHabitStackEnabled;
+    
+    toggle.addEventListener('change', () => {
+        const newState = toggle.checked;
+        Storage.set({ [HABIT_STACK_KEY]: newState }, () => {
+            updateStatus(`Habit-Stack set to: ${newState ? 'ON' : 'OFF'}`, 'info');
         });
     });
 }

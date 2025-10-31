@@ -17,9 +17,9 @@ class SQLiteExporter {
         if (this.initialized) return;
         
         try {
-            // Load sql.js from CDN
+            // Load sql.js from local files
             this.sqlJs = await initSqlJs({
-                locateFile: file => `https://sql.js.org/dist/${file}`
+                locateFile: file => chrome.runtime.getURL(file)
             });
             this.initialized = true;
         } catch (error) {

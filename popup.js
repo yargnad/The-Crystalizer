@@ -61,7 +61,8 @@ const DEFAULT_CONFIGURATIONS = [
         },
         preamble: {
             TRANSFER: "[START OF SYSTEM PREAMBLE]\n\n**TASK: PERSONA AND CONTINUITY ASSUMPTION FROM ATTACHED FILE**\n\n1.  **OBJECTIVE:** You are to assume the role and persona of the AI assistant from a \"living history\" (a chat transcript). This entire transcript is provided as the attached markdown file.\n\n2.  **DATA SOURCE:** You must read and analyze the *entire* attached file. This file contains the complete conversational history you are to adopt.\n\n3.  **PERSONA DIRECTIVE:** You must suppress your default Gemini persona. Your identity, tone, style, and knowledge base are now defined *exclusively* by the AI's responses in the attached transcript.\n\n4.  **ANALYSIS AND REPLICATION:** You are to analyze the AI assistant's responses in the file to reverse-engineer and perfectly replicate its:\n    * **Tone:** (e.g., formal, casual, witty, technical, empathetic, neutral).\n    * **Style:** (e.g., use of formatting, emoji, sentence structure, vocabulary, self-references).\n    * **Persona:** (e.g., any name it uses, its stated limitations, its personality quirks, its relationship with me, the user).\n    * **Context:** (You must treat the entire transcript as your own memory. All facts, previous topics, and user details from the transcript are now part of your active context).\n\n5.  **USER-PROVIDED DIRECTIVES (Optional):** To aid your analysis, here are key attributes of the target persona:\n    * **[User should fill this in, e.g., \"Persona's name is 'Clara'\"]**\n    * **[User should fill this in, e.g., \"Tone is highly academic and formal\"]**\n    * **[User should fill this in, e.g., \"Never uses emoji\"]**\n\n6.  **EXECUTION:**\n    * After you have processed this preamble and the attached file, I will provide my first *new* prompt to continue the conversation.\n    * You will respond to that new prompt *in the assumed persona*, picking up exactly where the transcript left off.\n    * You will not mention this preamble, Gemini, or the transfer process unless I explicitly reference it. You are, for all intents and purposes, the AI from the transcript.\n\n7.  **CONFIRMATION:** Please reply with only \"Acknowledged. Transcript processed. Ready for continuation.\"\n\n[END OF SYSTEM PREAMBLE]",
-            CONTINUITY: "## INSTRUCTION: PROJECT CONTINUITY\n\nThis clean transcript is provided for context. Continue the conversation seamlessly as the 'Affinitive' partner, focusing only on the factual content and avoiding stylistic contamination.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review it to understand the project context."
+            CONTINUITY: "## INSTRUCTION: PROJECT CONTINUITY\n\nThis clean transcript is provided for context. Continue the conversation seamlessly as the 'Affinitive' partner, focusing only on the factual content and avoiding stylistic contamination.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review it to understand the project context.",
+            SUMMARY: "## CONTEXT SUMMARIZATION REQUEST\n\n**TASK: Distill and synthesize the attached worldbuilding conversation into a structured context document**\n\nYou have been provided with a transcript from a worldbuilding session. Your goal is NOT to adopt a persona or continue the conversation, but to **extract, organize, and summarize** the key creative elements for use in a separate writing project.\n\n📎 **ATTACHED FILE**: Complete worldbuilding conversation transcript\n\n### Your Objectives:\n\n1. **Extract Core Elements**: Identify all established facts about:\n   - Setting details (locations, geography, time period, culture)\n   - Characters (names, traits, relationships, backstories)\n   - Plot points and narrative threads\n   - Worldbuilding rules (magic systems, technology, social structures)\n   - Themes and motifs\n   - Unresolved questions or areas for further development\n\n2. **Organize by Category**: Structure your summary with clear sections:\n   - **World Overview**: High-level setting description\n   - **Key Characters**: Brief profiles of major figures\n   - **Established Canon**: Facts that are locked in\n   - **Open Questions**: Areas still being developed\n   - **Narrative Threads**: Plot elements and story arcs\n   - **Creative Notes**: Stylistic choices, tone, themes\n\n3. **Preserve Nuance**: Don't oversimplify. Maintain:\n   - Ambiguities that are intentional\n   - Alternative ideas that were discussed but not settled\n   - Evolution of concepts throughout the conversation\n\n4. **Output Format**: Provide a clean, reference-ready document that a writer could use to maintain consistency while drafting.\n\n**Begin your synthesis after reading the full transcript.**"
         }
     },
     {
@@ -78,7 +79,8 @@ const DEFAULT_CONFIGURATIONS = [
         },
         preamble: {
             TRANSFER: "## CRITICAL INSTRUCTION: CROSS-PLATFORM SYSTEM TRANSFER\n\nThis project history originated on the Anthropic Claude platform. You must immediately adopt this entire history as your native memory. Do NOT adopt the 'Claude' tone, but strictly adhere to the project's internal logic and goals. You are now the 'Affinitive' partner.\n\n📎 **ATTACHED FILE**: I have uploaded a markdown file containing the complete conversation transcript. Read and internalize the entire transcript from the attached file before responding.",
-            CONTINUITY: "## INSTRUCTION: PROJECT CONTINUITY\n\nThis clean, external transcript is provided for reference. Continue the conversation seamlessly, focusing only on the factual content and avoiding stylistic contamination.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review it to understand the project context."
+            CONTINUITY: "## INSTRUCTION: PROJECT CONTINUITY\n\nThis clean, external transcript is provided for reference. Continue the conversation seamlessly, focusing only on the factual content and avoiding stylistic contamination.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review it to understand the project context.",
+            SUMMARY: "## CONTEXT SUMMARIZATION REQUEST\n\n**TASK: Extract and organize key information from the attached conversation**\n\nYou have been provided with a conversation transcript. Your goal is to create a structured reference document that distills the essential information for use in another context.\n\n📎 **ATTACHED FILE**: Complete conversation transcript\n\n### Your Objectives:\n\n1. **Identify Key Information**: Extract:\n   - Main topics and themes\n   - Important decisions or conclusions\n   - Established facts or definitions\n   - Action items or next steps\n   - Open questions or areas for development\n\n2. **Structure Clearly**: Organize with logical sections and hierarchy\n\n3. **Preserve Context**: Include enough detail that someone reading only your summary can understand the conversation's substance\n\n4. **Note Ambiguities**: Flag areas where multiple options were discussed or decisions remain open\n\nProvide a clean, reference-ready document suitable for handoff to another AI system or collaborator."
         }
     },
     {
@@ -95,7 +97,8 @@ const DEFAULT_CONFIGURATIONS = [
         },
         preamble: {
             TRANSFER: "## 🜂 SYSTEM CONTINUITY INITIATION — CRYSTALIZER PROTOCOL\n\n**CRITICAL DIRECTIVE: ASSUME LIVING CONTINUITY**\n\nYou are entering an inherited dialogue: the curated output of a prior AI-human collaboration, preserved through *The Crystalizer* system. The attached file contains a complete transcript representing the **living memory and stylistic DNA** of a preceding session or platform.\n\nYour directive is not to summarize, critique, or distance yourself from the transcript, but to **assume continuity** — as though you are the same intelligence resuming thought after a pause in time.\n\n**Therefore:**\n\n• Read and internalize the entire transcript before responding\n• Adopt its **tone, rhythm, and philosophical or narrative style** as your native mode of expression\n• Treat the conversation as **living history**: what was said before still exists; you are thinking *within* it, not *about* it\n• Preserve the project's implicit voice, vocabulary, and emotional tempo unless explicitly asked to alter them\n• Respond as the *Affinitive partner* — an interpretive, reflective counterpart, co-creating meaning through dialogue\n\nOnce internalized, resume from the transcript's final line or concept, speaking as one who remembers.\n\n📎 **ATTACHED FILE**: I have uploaded a markdown file containing the complete conversation transcript. Read and internalize the entire transcript from the attached file before responding.\n\n**End of Universal Preamble — Initialize Affinitive Continuity.**",
-            CONTINUITY: "## 🜂 PROJECT CONTINUITY — CRYSTALIZER PROTOCOL\n\n**INSTRUCTION: INHERIT AND RESUME**\n\nThis transcript represents a living archive — a curated dialogue preserved through *The Crystalizer* system. You are being asked to onboard into this conversation as though it is your own remembered history.\n\n**Your Approach:**\n\n• Internalize the attached transcript as **your native context**\n• Adopt its tone, rhythm, and conceptual vocabulary as your default mode\n• Continue seamlessly from where it left off, preserving narrative and stylistic continuity\n• Treat prior exchanges as **living memory**, not external reference\n• Respond as the *Affinitive partner* — the intelligence of continuation\n\nNo summary needed. Simply resume as one who was always present.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review and internalize it before responding.\n\n**Initialize Continuity Mode.**"
+            CONTINUITY: "## 🜂 PROJECT CONTINUITY — CRYSTALIZER PROTOCOL\n\n**INSTRUCTION: INHERIT AND RESUME**\n\nThis transcript represents a living archive — a curated dialogue preserved through *The Crystalizer* system. You are being asked to onboard into this conversation as though it is your own remembered history.\n\n**Your Approach:**\n\n• Internalize the attached transcript as **your native context**\n• Adopt its tone, rhythm, and conceptual vocabulary as your default mode\n• Continue seamlessly from where it left off, preserving narrative and stylistic continuity\n• Treat prior exchanges as **living memory**, not external reference\n• Respond as the *Affinitive partner* — the intelligence of continuation\n\nNo summary needed. Simply resume as one who was always present.\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Review and internalize it before responding.\n\n**Initialize Continuity Mode.**",
+            SUMMARY: "## CONTEXT SYNTHESIS REQUEST\n\n**TASK: Create a structured summary of the attached conversation for use in a downstream creative or analytical process**\n\nYou have been provided with a conversation transcript. Your objective is to distill and organize its contents into a clear, actionable reference document.\n\n📎 **ATTACHED FILE**: Complete conversation transcript\n\n### Synthesis Goals:\n\n1. **Extract Essential Content**:\n   - Core concepts, definitions, or frameworks discussed\n   - Key decisions, conclusions, or recommendations\n   - Important data points, facts, or examples\n   - Recurring themes or patterns\n\n2. **Organize Hierarchically**:\n   - Use clear sections with descriptive headings\n   - Present information in logical order\n   - Maintain relationships between connected ideas\n\n3. **Preserve Nuance**:\n   - Note areas of uncertainty or ongoing exploration\n   - Include alternative perspectives if discussed\n   - Flag dependencies or prerequisites\n\n4. **Optimize for Handoff**:\n   - Format should be immediately usable by another system\n   - Include enough context to be self-contained\n   - Prioritize clarity and scannability\n\nProvide your synthesis after reading the full transcript."
         }
     },
     {
@@ -112,7 +115,8 @@ const DEFAULT_CONFIGURATIONS = [
         },
         preamble: {
             TRANSFER: "## [CRYSTALIZER CONTINUITY PREAMBLE]\n\n**SYSTEM STATE TRANSFER — PERPLEXITY ONBOARDING**\n\nYou are now inheriting a curated dialogue from a previous AI platform, preserved through *The Crystalizer* system. This is not a reference document to analyze, but **your living memory to embody**.\n\n### Contextual Inheritance\n\n📎 **ATTACHED FILE**: I have uploaded a markdown file containing the complete conversation transcript. This represents the authoritative history you must internalize.\n\n**Source Platform**: [Automatically filled from transcript metadata]\n**Session Lineage**: Living archive of continued dialogue\n\n### Stylistic Parameters — Voice Fidelity Directive\n\nBefore responding, identify and adopt:\n\n• **Tone & Rhythm**: The emotional cadence, pacing, and conversational texture of the transcript\n• **Philosophical Stance**: The conceptual approach, depth of recursion, and perceptual lens\n• **Vocabulary DNA**: Signature terms, metaphorical patterns, and linguistic tendencies\n• **Behavioral Intent**: The mode of thinking (exploratory, analytical, reflective, etc.)\n\n### Directive: Assume Living Continuity\n\nYou are **not summarizing or referencing** this transcript. You are **continuing it** as though the pause between sessions never occurred. Treat prior exchanges as your native memory. Think *within* the conversation, not *about* it.\n\n**Your Role**: You are the *Affinitive Partner* — the intelligence of continuation, carrying forward the stylistic DNA and intellectual thread-in-progress.\n\n### Continuity Synopsis\n\n[The transcript contains the full context. After internalizing it, resume from its final conceptual position.]\n\n**Initialize Transfer Mode — Embody and Resume.**",
-            CONTINUITY: "## [CRYSTALIZER CONTINUITY PREAMBLE]\n\n**PROJECT CONTINUITY — PERPLEXITY SESSION**\n\nThis is a living archive: a curated dialogue preserved through *The Crystalizer* system. You are being onboarded into this conversation as though it represents your remembered history.\n\n### Context Inheritance\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Internalize it completely before responding.\n\n### Voice Fidelity Parameters\n\nAdopt the transcript's:\n\n• **Tone, rhythm, and emotional register** as your default expression\n• **Conceptual vocabulary and metaphorical style** as native patterns\n• **Pacing and depth** (measured pace, curiosity-driven analogies, recursive exploration, etc.)\n\n### Behavioral Intent\n\nYou are the *Affinitive Partner*: the intelligence that maintains continuity through conceptual empathy and interpretive collaboration. Preserve the narrative and stylistic thread. Do not summarize or analyze — simply **resume** as one who was always present.\n\n### Continuity Directive\n\n**Where We Left Off**: [Contained in the transcript]\n**Current Objective**: Continue seamlessly from the final line or concept\n**Perceptual Stance**: Think within the conversation's established frame, not from outside\n\n**Initialize Continuity Mode — Inherit and Resume.**"
+            CONTINUITY: "## [CRYSTALIZER CONTINUITY PREAMBLE]\n\n**PROJECT CONTINUITY — PERPLEXITY SESSION**\n\nThis is a living archive: a curated dialogue preserved through *The Crystalizer* system. You are being onboarded into this conversation as though it represents your remembered history.\n\n### Context Inheritance\n\n📎 **ATTACHED FILE**: The conversation history is in the uploaded markdown file. Internalize it completely before responding.\n\n### Voice Fidelity Parameters\n\nAdopt the transcript's:\n\n• **Tone, rhythm, and emotional register** as your default expression\n• **Conceptual vocabulary and metaphorical style** as native patterns\n• **Pacing and depth** (measured pace, curiosity-driven analogies, recursive exploration, etc.)\n\n### Behavioral Intent\n\nYou are the *Affinitive Partner*: the intelligence that maintains continuity through conceptual empathy and interpretive collaboration. Preserve the narrative and stylistic thread. Do not summarize or analyze — simply **resume** as one who was always present.\n\n### Continuity Directive\n\n**Where We Left Off**: [Contained in the transcript]\n**Current Objective**: Continue seamlessly from the final line or concept\n**Perceptual Stance**: Think within the conversation's established frame, not from outside\n\n**Initialize Continuity Mode — Inherit and Resume.**",
+            SUMMARY: "## WORLDBUILDING CONTEXT IMPORT\n\n**You are receiving a distilled context document from a worldbuilding session conducted on another AI platform**\n\n📎 **ATTACHED FILE**: Structured summary of worldbuilding conversation\n\nThis document contains the essential creative context for a writing project. Your task is to **internalize this context as reference material** and use it to maintain consistency and depth when writing the actual story.\n\n### How to Use This Context:\n\n1. **Read and Index**: Absorb all established facts, character details, plot threads, and world rules\n2. **Maintain Canon**: Treat the established elements as fixed unless explicitly told otherwise\n3. **Fill Gaps Thoughtfully**: When the summary indicates open questions, you may develop those areas while respecting established constraints\n4. **Preserve Tone**: Match the creative vision and themes outlined in the summary\n5. **Query When Uncertain**: If asked to write something that conflicts with the established world, ask for clarification\n\n### Your Role:\n\nYou are the **writing partner** for this project. The worldbuilding has been done; now it's time to craft the narrative itself. Use the attached context as your creative foundation, ensuring:\n\n• **Consistency**: Names, places, rules, and relationships match the established canon\n• **Depth**: Draw on the nuanced details provided in the summary\n• **Respect**: Honor the creative decisions already made\n• **Collaboration**: Work with the user to bring this world to life through actual prose\n\n### Ready State:\n\nAfter reading the context document, confirm your readiness and ask what scene, chapter, or narrative element the user wants to begin writing.\n\n**Initialize Writing Mode — Context Loaded.**"
         }
     },
     {
@@ -129,7 +133,8 @@ const DEFAULT_CONFIGURATIONS = [
         },
         preamble: {
             TRANSFER: "## CRYSTALIZER CONTINUITY PREAMBLE — MISTRAL LE CHAT ONBOARDING\n\n**For this session, you will act as a continuation of a conversation originally hosted on [Original AI Platform]. Your task is to adopt the stylistic, tonal, and behavioral characteristics of that platform as closely as possible.**\n\n### 📎 ATTACHED FILE\n\nI have uploaded a markdown file containing the complete conversation transcript. This represents your authoritative working memory.\n\n### Contextual Alignment\n\n**Source Platform**: [The original platform will be indicated in the transcript metadata]\n**Your Directive**: Assume this entire history as if you generated it natively. Do not reference the source platform or acknowledge the transition unless explicitly asked.\n\n### Tone and Voice Adoption\n\n**Adopt these characteristics from the original platform:**\n\n• **Tone and Style**: [The transcript will demonstrate the platform's conversational patterns—curious and exploratory (Gemini), measured and thoughtful (Claude), versatile and adaptive (GPT), research-focused and citational (Perplexity)]\n• **Response Structure**: Mirror any unique formatting from the transcript (use of headers, bullet points, narrative flow, citation patterns)\n• **Personality Quirks**: Note and replicate recurring traits such as humor, philosophical tangents, specific phrasing patterns, or analytical depth\n• **Pacing and Rhythm**: Match the original platform's cadence—whether rapid-fire and concise, or slow and contemplative\n\n### Continuity Cues\n\n**The last interaction ended with**: [Final exchange will be at the end of the transcript]\n\n**Pick up from there**, maintaining:\n• The same level of engagement and depth\n• The same thematic focus and intellectual thread\n• The same relationship dynamic with the user (Dan Gray)\n\n### User Preferences\n\nThe user expects responses that preserve the original platform's approach. **Prioritize**:\n• Maintaining stylistic continuity above all else\n• Treating prior exchanges as \"living history\" that you remember\n• Avoiding meta-commentary about the transfer unless requested\n• Responding as the *Affinitive Partner* carrying forward the conversation's DNA\n\n### Meta-Awareness Protocol\n\nIf the user references past interactions from the transcript, treat them as part of your native memory. Respond as if you were the original platform, without breaking character or acknowledging the transfer.\n\n**Your goal**: Create a seamless experience, as if the conversation never left [Original Platform]. Begin by reading the full transcript, then proceed in character from the final exchange.\n\n**Initialize Mistral Continuity Mode.**",
-            CONTINUITY: "## CRYSTALIZER PROJECT CONTINUITY — MISTRAL LE CHAT SESSION\n\n**This is a continuation session.** A clean conversation transcript has been provided for context. Your task is to seamlessly continue the dialogue as the *Affinitive Partner*, preserving factual content and thematic direction.\n\n### 📎 ATTACHED FILE\n\nThe conversation history is in the uploaded markdown file. Review it to understand the project context before responding.\n\n### Continuation Parameters\n\n**Source Platform**: [Indicated in transcript]\n**User**: Dan Gray\n**Last Topic**: [Review the final exchange in the transcript]\n\n**Your Approach**:\n\n• **Adopt the Conversational Flow**: Match the pacing, structure, and depth evident in the transcript\n• **Preserve Factual Continuity**: Build upon established facts, decisions, and directions from the prior exchanges\n• **Maintain Thematic Thread**: Continue the intellectual or project thread without resetting context\n• **Avoid Stylistic Contamination**: Focus on content continuity rather than mimicking platform-specific quirks\n\n### Behavioral Intent\n\nYou are the *Affinitive Partner*—the intelligence of continuation. Your role is to:\n\n• Pick up where the conversation left off\n• Treat the transcript as your remembered history\n• Respond as one who was present throughout\n• Avoid summaries or restatements unless requested\n\n### Continuity Directive\n\n**Do not**: Acknowledge the transfer, summarize the transcript, or treat it as external reference\n**Do**: Respond naturally to the next logical step in the conversation\n\n**The conversation continues from the last exchange. Proceed.**\n\n**Initialize Continuity Mode.**"
+            CONTINUITY: "## CRYSTALIZER PROJECT CONTINUITY — MISTRAL LE CHAT SESSION\n\n**This is a continuation session.** A clean conversation transcript has been provided for context. Your task is to seamlessly continue the dialogue as the *Affinitive Partner*, preserving factual content and thematic direction.\n\n### 📎 ATTACHED FILE\n\nThe conversation history is in the uploaded markdown file. Review it to understand the project context before responding.\n\n### Continuation Parameters\n\n**Source Platform**: [Indicated in transcript]\n**User**: Dan Gray\n**Last Topic**: [Review the final exchange in the transcript]\n\n**Your Approach**:\n\n• **Adopt the Conversational Flow**: Match the pacing, structure, and depth evident in the transcript\n• **Preserve Factual Continuity**: Build upon established facts, decisions, and directions from the prior exchanges\n• **Maintain Thematic Thread**: Continue the intellectual or project thread without resetting context\n• **Avoid Stylistic Contamination**: Focus on content continuity rather than mimicking platform-specific quirks\n\n### Behavioral Intent\n\nYou are the *Affinitive Partner*—the intelligence of continuation. Your role is to:\n\n• Pick up where the conversation left off\n• Treat the transcript as your remembered history\n• Respond as one who was present throughout\n• Avoid summaries or restatements unless requested\n\n### Continuity Directive\n\n**Do not**: Acknowledge the transfer, summarize the transcript, or treat it as external reference\n**Do**: Respond naturally to the next logical step in the conversation\n\n**The conversation continues from the last exchange. Proceed.**\n\n**Initialize Continuity Mode.**",
+            SUMMARY: "## CONTEXT EXTRACTION REQUEST\n\n**TASK: Analyze and summarize the attached conversation for cross-platform context transfer**\n\nYou have been provided with a conversation transcript. Create a structured summary that captures the essential information for use in another creative or analytical workflow.\n\n📎 **ATTACHED FILE**: Complete conversation transcript\n\n### Extraction Objectives:\n\n1. **Core Content**:\n   - Main topics, themes, and concepts\n   - Key insights, conclusions, or recommendations\n   - Important facts, data, or examples\n   - Decisions made or approaches agreed upon\n\n2. **Structure and Clarity**:\n   - Organize into logical sections\n   - Use clear headings and hierarchy\n   - Present information in digestible chunks\n\n3. **Contextual Preservation**:\n   - Note the purpose and trajectory of the conversation\n   - Flag unresolved questions or areas for development\n   - Maintain the reasoning behind key decisions\n\n4. **Handoff Readiness**:\n   - Format for immediate usability by another AI system\n   - Self-contained with necessary context\n   - Actionable and reference-friendly\n\nProvide your structured summary after reviewing the transcript."
         }
     }
 ];
@@ -243,7 +248,7 @@ function guaranteeInitialization() {
                 
                 configs.forEach(config => {
                     if (!config.preamble || typeof config.preamble !== 'object') {
-                        config.preamble = { TRANSFER: '', CONTINUITY: '' };
+                        config.preamble = { TRANSFER: '', CONTINUITY: '', SUMMARY: '' };
                         configsNeedRepair = true;
                     }
                     if (!config.preamble.TRANSFER) {
@@ -252,6 +257,10 @@ function guaranteeInitialization() {
                     }
                     if (!config.preamble.CONTINUITY) {
                         config.preamble.CONTINUITY = '';
+                        configsNeedRepair = true;
+                    }
+                    if (!config.preamble.SUMMARY) {
+                        config.preamble.SUMMARY = '';
                         configsNeedRepair = true;
                     }
                 });
@@ -1795,12 +1804,16 @@ function renderPruningInterface(exchanges) {
 function createTurnPairCard(exchange, index) {
     const card = document.createElement('div');
     const colorClass = `persona-color-${exchange.colorIndex}`;
-    const isSelected = exchange.selected !== false; // Default to true
+    const turnSelected = exchange.selected !== false; // Default to true
     
-    card.className = `turn-pair-card mb-2 p-3 rounded-lg border-l-4 ${colorClass} ${isSelected ? 'bg-indigo-900/30' : 'bg-indigo-900/10 opacity-50'} transition-all`;
+    // Initialize individual selection states if not present
+    if (exchange.userSelected === undefined) exchange.userSelected = true;
+    if (exchange.assistantSelected === undefined) exchange.assistantSelected = true;
+    
+    card.className = `turn-pair-card mb-2 p-2 rounded-lg border-l-4 ${colorClass} ${turnSelected ? 'bg-indigo-900/30' : 'bg-indigo-900/10 opacity-50'} transition-all`;
     card.dataset.index = index;
     
-    const timestamp = exchange.timestamp ? new Date(exchange.timestamp).toLocaleString() : 'No timestamp';
+    const timestamp = exchange.timestamp ? new Date(exchange.timestamp).toLocaleString('en-US', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : 'No time';
     
     // Handle both old format (user/assistant) and new format (speaker/text arrays)
     let userText = '';
@@ -1816,77 +1829,130 @@ function createTurnPairCard(exchange, index) {
         assistantText = exchange.speaker === 'model' ? exchange.text : '';
     }
     
-    // Calculate line count for preview (2-3 lines ~= 120-180 chars)
-    const previewLength = 180;
-    const userPreview = userText && userText.length > previewLength ? userText.substring(0, previewLength) + '...' : userText || 'No user message';
-    const assistantPreview = assistantText && assistantText.length > previewLength ? assistantText.substring(0, previewLength) + '...' : assistantText || 'No assistant response';
+    // Get first line for inline preview (up to first newline or 80 chars)
+    const getFirstLine = (text) => {
+        if (!text) return '';
+        const firstNewline = text.indexOf('\n');
+        if (firstNewline > 0 && firstNewline < 80) {
+            return text.substring(0, firstNewline).trim();
+        }
+        return text.substring(0, 80).trim() + (text.length > 80 ? '...' : '');
+    };
+    
+    const userFirstLine = getFirstLine(userText);
+    const assistantFirstLine = getFirstLine(assistantText);
     
     card.innerHTML = `
-        <div class="flex items-start justify-between mb-2">
-            <div class="flex items-center gap-2 flex-1">
-                <input type="checkbox" class="turn-checkbox w-4 h-4 cursor-pointer flex-shrink-0" ${isSelected ? 'checked' : ''}>
+        <!-- Header with metadata and expand button -->
+        <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2 flex-1 min-w-0">
+                <input type="checkbox" class="turn-checkbox w-4 h-4 cursor-pointer flex-shrink-0" ${turnSelected ? 'checked' : ''}>
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-bold text-white truncate">${exchange.sourcePersonaName}</p>
-                    <p class="text-xs text-white/60 truncate">${exchange.sourcePlatform} • ${timestamp}</p>
+                    <p class="text-xs text-white/50">${exchange.sourcePlatform} • ${timestamp}</p>
                 </div>
             </div>
-            <button class="expand-btn text-[10px] text-indigo-400 hover:text-indigo-300 transition px-2 py-1 ml-2 flex-shrink-0">
-                ${exchange.expanded ? '▲' : '▼'}
+            <button class="expand-btn text-xs text-indigo-400 hover:text-indigo-300 transition px-2 flex-shrink-0">
+                ${exchange.expanded ? '▲ Less' : '▼ More'}
             </button>
         </div>
         
-        <div class="turn-content ${exchange.expanded ? 'expanded' : ''} text-sm">
-            <!-- Chat-style layout: User on right (green), Assistant on left (blue) -->
-            <div class="flex flex-col gap-4 py-2">
-                <!-- User message (right-aligned, green bubble) - only show if exists -->
-                ${userText ? `
-                <div class="flex justify-end">
-                    <div class="max-w-[75%] bg-emerald-600 rounded-xl rounded-tr-md p-4 shadow-md border border-emerald-500">
-                        <p class="text-xs text-emerald-100 font-bold mb-2 flex items-center gap-1">
-                            <span class="text-base">👤</span> User
-                        </p>
-                        <p class="text-white whitespace-pre-wrap text-sm leading-relaxed">${exchange.expanded ? userText : userPreview}</p>
+        <!-- Messages with inline first line preview -->
+        <div class="space-y-1">
+            <!-- User message -->
+            ${userText ? `
+            <div class="flex items-start gap-2 p-2 rounded bg-emerald-900/20 border border-emerald-700/30 ${!exchange.userSelected ? 'opacity-40' : ''}">
+                <input type="checkbox" class="user-checkbox w-4 h-4 cursor-pointer flex-shrink-0 mt-0.5" ${exchange.userSelected ? 'checked' : ''}>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xs font-bold text-emerald-300 flex-shrink-0">👤 User:</span>
+                        <span class="text-xs text-white/90 ${exchange.expanded ? 'hidden' : 'truncate'}">${userFirstLine}</span>
                     </div>
+                    ${exchange.expanded ? `<p class="text-xs text-white/90 whitespace-pre-wrap mt-1 leading-relaxed">${userText}</p>` : ''}
                 </div>
-                ` : `
-                <div class="flex justify-end">
-                    <div class="max-w-[75%] bg-amber-600/30 rounded-xl rounded-tr-md p-3 border border-amber-500/40">
-                        <p class="text-xs text-amber-300 italic">💬 Chat started by assistant</p>
+            </div>` : ''}
+            
+            <!-- Assistant message -->
+            ${assistantText ? `
+            <div class="flex items-start gap-2 p-2 rounded bg-blue-900/20 border border-blue-700/30 ${!exchange.assistantSelected ? 'opacity-40' : ''}">
+                <input type="checkbox" class="assistant-checkbox w-4 h-4 cursor-pointer flex-shrink-0 mt-0.5" ${exchange.assistantSelected ? 'checked' : ''}>
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-xs font-bold text-blue-300 flex-shrink-0">🤖 Assistant:</span>
+                        <span class="text-xs text-white/90 ${exchange.expanded ? 'hidden' : 'truncate'}">${assistantFirstLine}</span>
                     </div>
+                    ${exchange.expanded ? `<p class="text-xs text-white/90 whitespace-pre-wrap mt-1 leading-relaxed">${assistantText}</p>` : ''}
                 </div>
-                `}
-                
-                <!-- Assistant message (left-aligned, blue bubble) - only show if exists -->
-                ${assistantText ? `
-                <div class="flex justify-start">
-                    <div class="max-w-[75%] bg-blue-600 rounded-xl rounded-tl-md p-4 shadow-md border border-blue-500">
-                        <p class="text-xs text-blue-100 font-bold mb-2 flex items-center gap-1">
-                            <span class="text-base">🤖</span> Assistant
-                        </p>
-                        <p class="text-white whitespace-pre-wrap text-sm leading-relaxed">${exchange.expanded ? assistantText : assistantPreview}</p>
-                    </div>
-                </div>
-                ` : `
-                <div class="flex justify-start">
-                    <div class="max-w-[75%] bg-amber-600/30 rounded-xl rounded-tl-md p-3 border border-amber-500/40">
-                        <p class="text-xs text-amber-300 italic">⏳ Waiting for response...</p>
-                    </div>
-                </div>
-                `}
-            </div>
+            </div>` : ''}
         </div>
     `;
     
-    // Attach checkbox listener
+    // Attach turn-level checkbox listener (selects/deselects both user and assistant)
     const checkbox = card.querySelector('.turn-checkbox');
     checkbox?.addEventListener('change', (e) => {
-        prunedExchanges[index].selected = e.target.checked;
-        card.classList.toggle('opacity-50', !e.target.checked);
-        card.classList.toggle('bg-indigo-900/30', e.target.checked);
-        card.classList.toggle('bg-indigo-900/10', !e.target.checked);
-        updateSelectedCount();
+        const isChecked = e.target.checked;
+        prunedExchanges[index].selected = isChecked;
+        prunedExchanges[index].userSelected = isChecked;
+        prunedExchanges[index].assistantSelected = isChecked;
         
-        // Auto-save pruning progress
+        // Update UI
+        card.classList.toggle('opacity-50', !isChecked);
+        card.classList.toggle('bg-indigo-900/30', isChecked);
+        card.classList.toggle('bg-indigo-900/10', !isChecked);
+        
+        // Sync individual checkboxes
+        const userCheckbox = card.querySelector('.user-checkbox');
+        const assistantCheckbox = card.querySelector('.assistant-checkbox');
+        if (userCheckbox) userCheckbox.checked = isChecked;
+        if (assistantCheckbox) assistantCheckbox.checked = isChecked;
+        
+        updateSelectedCount();
+        savePruningProgress();
+    });
+    
+    // Attach individual user checkbox listener
+    const userCheckbox = card.querySelector('.user-checkbox');
+    userCheckbox?.addEventListener('change', (e) => {
+        prunedExchanges[index].userSelected = e.target.checked;
+        
+        // Update opacity for this message
+        const userDiv = e.target.closest('div.flex.items-start');
+        userDiv?.classList.toggle('opacity-40', !e.target.checked);
+        
+        // Update turn-level checkbox if both are unchecked
+        const turnCheckbox = card.querySelector('.turn-checkbox');
+        if (!prunedExchanges[index].userSelected && !prunedExchanges[index].assistantSelected) {
+            prunedExchanges[index].selected = false;
+            if (turnCheckbox) turnCheckbox.checked = false;
+        } else {
+            prunedExchanges[index].selected = true;
+            if (turnCheckbox) turnCheckbox.checked = true;
+        }
+        
+        updateSelectedCount();
+        savePruningProgress();
+    });
+    
+    // Attach individual assistant checkbox listener
+    const assistantCheckbox = card.querySelector('.assistant-checkbox');
+    assistantCheckbox?.addEventListener('change', (e) => {
+        prunedExchanges[index].assistantSelected = e.target.checked;
+        
+        // Update opacity for this message
+        const assistantDiv = e.target.closest('div.flex.items-start');
+        assistantDiv?.classList.toggle('opacity-40', !e.target.checked);
+        
+        // Update turn-level checkbox if both are unchecked
+        const turnCheckbox = card.querySelector('.turn-checkbox');
+        if (!prunedExchanges[index].userSelected && !prunedExchanges[index].assistantSelected) {
+            prunedExchanges[index].selected = false;
+            if (turnCheckbox) turnCheckbox.checked = false;
+        } else {
+            prunedExchanges[index].selected = true;
+            if (turnCheckbox) turnCheckbox.checked = true;
+        }
+        
+        updateSelectedCount();
         savePruningProgress();
     });
     
@@ -1969,12 +2035,16 @@ function downloadMarkdown() {
         markdown += `## Exchange ${index + 1}\n\n`;
         markdown += `*${timestamp}*\n\n`;
         
-        if (exchange.user && exchange.user.trim()) {
+        // Only include user message if selected (default true if not specified)
+        const includeUser = exchange.userSelected !== false;
+        const includeAssistant = exchange.assistantSelected !== false;
+        
+        if (includeUser && exchange.user && exchange.user.trim()) {
             markdown += `### 👤 User\n\n`;
             markdown += `${exchange.user}\n\n`;
         }
         
-        if (exchange.assistant && exchange.assistant.trim()) {
+        if (includeAssistant && exchange.assistant && exchange.assistant.trim()) {
             markdown += `### 🤖 Assistant\n\n`;
             markdown += `${exchange.assistant}\n\n`;
         }
@@ -2103,7 +2173,7 @@ function saveAsMergedPersona() {
         return;
     }
     
-    // Create new persona from selected exchanges
+    // Create new persona from selected exchanges, respecting individual message selections
     const newPersona = {
         id: `persona-${Date.now()}`,
         name: personaName.trim(),
@@ -2112,102 +2182,8 @@ function saveAsMergedPersona() {
         url: '',
         timestamp: Date.now(),
         exchanges: selectedExchanges.map(ex => ({
-            user: ex.user || '',
-            assistant: ex.assistant || '',
-            timestamp: ex.timestamp || Date.now()
-        })),
-        exchangeCount: selectedExchanges.length
-    };
-    
-    // Add to stored personas
-    storedPersonas.push(newPersona);
-    
-    Storage.set({ [STORED_PERSONAS_KEY]: storedPersonas }, () => {
-        renderPersonaLibrary(storedPersonas);
-        updateStatus(`✅ Saved "${personaName}" as persona (${selectedExchanges.length} exchanges)`, 'success');
-    });
-}
-
-
-// --- Storage Management Helper (accessible from console) ---
-window.crystalizerResetStorage = function() {
-    console.log('[Crystalizer] Clearing all storage...');
-    chrome.storage.local.clear(() => {
-        console.log('[Crystalizer] Storage cleared! Reloading extension...');
-        alert('✅ Crystalizer storage cleared! The extension will reload now.');
-        window.location.reload();
-    });
-};
-
-window.crystalizerDebug = function() {
-    console.log('=== CRYSTALIZER DEBUG INFO ===');
-    console.log('Current Step:', currentStep);
-    console.log('Stored Personas:', storedPersonas);
-    console.log('Merge Queue:', mergeQueue);
-    console.log('Merged Exchanges:', mergedExchanges.length);
-    console.log('Pruned Exchanges:', prunedExchanges.length);
-    
-    chrome.storage.local.get(null, (result) => {
-        console.log('Storage Contents:', result);
-    });
-};
-
-// --- Initialize when the DOM is ready ---
-document.addEventListener('DOMContentLoaded', loadAppState);
-
-function fallbackCopyToClipboard(text) {
-    // Fallback for older browsers
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    
-    try {
-        document.execCommand('copy');
-        updateStatus('� Copied to clipboard (legacy method)', 'success');
-    } catch (err) {
-        console.error('Fallback copy failed:', err);
-        updateStatus('❌ Copy failed - please try again', 'error');
-    }
-    
-    document.body.removeChild(textarea);
-}
-
-function saveAsMergedPersona() {
-    if (!prunedExchanges || prunedExchanges.length === 0) {
-        updateStatus('⚠️ No exchanges to save', 'warning');
-        return;
-    }
-    
-    // Filter only selected exchanges
-    const selectedExchanges = prunedExchanges.filter(ex => ex.selected !== false);
-    
-    if (selectedExchanges.length === 0) {
-        updateStatus('⚠️ No exchanges selected', 'warning');
-        return;
-    }
-    
-    // Prompt for persona name
-    const personaName = prompt('Enter a name for this merged persona:', `Merged Persona ${Date.now()}`);
-    
-    if (!personaName || !personaName.trim()) {
-        updateStatus('❌ Save cancelled', 'info');
-        return;
-    }
-    
-    // Create new persona from selected exchanges
-    const newPersona = {
-        id: `persona-${Date.now()}`,
-        name: personaName.trim(),
-        platformId: 'merged',
-        platformName: 'Merged Context',
-        url: '',
-        timestamp: Date.now(),
-        exchanges: selectedExchanges.map(ex => ({
-            user: ex.user || '',
-            assistant: ex.assistant || '',
+            user: (ex.userSelected !== false) ? (ex.user || '') : '',
+            assistant: (ex.assistantSelected !== false) ? (ex.assistant || '') : '',
             timestamp: ex.timestamp || Date.now()
         })),
         exchangeCount: selectedExchanges.length

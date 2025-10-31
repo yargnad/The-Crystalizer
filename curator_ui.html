@@ -494,6 +494,14 @@
                             </label>
                         </div>
 
+                        <div class="flex items-center justify-between mb-2 p-2 bg-purple-900/30 rounded-lg border border-purple-700/50">
+                            <span class="font-semibold text-sm">✨ Enable Habit-Stack Facts</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="habitStackToggle" checked>
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+
                         <div class="flex justify-between items-center mb-2">
                             <h4 class="font-semibold text-indigo-300 text-sm">LLM Platform Configs</h4>
                             <button id="addCustomConfigBtn" class="bg-indigo-700 hover:bg-indigo-600 text-white font-bold py-1 px-2 rounded-md transition duration-200 shadow-md text-xs">
@@ -761,8 +769,9 @@
 
                     <label class="block text-indigo-200/90 mb-1">Transfer Mode</label>
                     <select id="transferModeSelect" class="w-full p-2 bg-indigo-900/40 border border-indigo-700 text-white rounded-md mb-3">
-                        <option value="TRANSFER">🚀 TRANSFER (High Intensity / Cross-Platform)</option>
-                        <option value="CONTINUITY">🔄 CONTINUITY (Low Intensity / Same-Platform)</option>
+                        <option value="TRANSFER">🚀 TRANSFER (Persona Transplant / Cross-Platform)</option>
+                        <option value="CONTINUITY">🔄 CONTINUITY (Same Persona / Same-Platform)</option>
+                        <option value="SUMMARY">📋 SUMMARY (Context Distillation / No Persona)</option>
                     </select>
 
                     <label class="block text-indigo-200/90 mb-2">Preamble Preview</label>

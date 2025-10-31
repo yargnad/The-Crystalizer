@@ -514,8 +514,11 @@ async function archivePersona(personaData) {
         await storageManager.addChatRecord(chatData);
         await updateStorageStats();
         
-        // Show canonical facts dialog
-        showCanonicalFactsDialog(personaData);
+        // Show canonical facts dialog only if enabled
+        const habitStackToggle = document.getElementById('habitStackToggle');
+        if (habitStackToggle && habitStackToggle.checked) {
+            showCanonicalFactsDialog(personaData);
+        }
         
     } catch (error) {
         console.error('Error archiving persona:', error);

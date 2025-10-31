@@ -412,9 +412,10 @@ async function loadAppState() {
 function attachGlobalListeners() {
     // Emergency reset button - only resets navigation, keeps all data
     document.getElementById('resetToStep1Btn')?.addEventListener('click', () => {
-        currentStep = 1;
-        Storage.set({ [CURRENT_STEP_KEY]: 1 });
-        gotoStep(1, false);
+        console.log('[Reset] Resetting to Step 1');
+        // Force currentStep to 2 first so gotoStep(1) triggers proper animation
+        currentStep = 2;
+        gotoStep(1, true);
         updateStatus('🔄 Reset to Step 1 (your data is preserved)', 'info');
     });
     
@@ -508,16 +509,27 @@ function gotoStep(stepNumber, save = true) {
         return;
     }
 
-    if (currentStep < stepNumber) {
-        currentPanel.classList.remove('active');
-        currentPanel.classList.add('inactive-left');
-        nextPanel.classList.remove('inactive-right', 'inactive-left');
-        nextPanel.classList.add('active');
-    } else if (currentStep > stepNumber) {
-        currentPanel.classList.remove('active');
-        currentPanel.classList.add('inactive-right');
-        nextPanel.classList.remove('inactive-right', 'inactive-left');
-        nextPanel.classList.add('active');
+    // CRITICAL FIX: Reset all panels first to ensure clean state
+    panels.forEach(panelId => {
+        const panel = document.getElementById(panelId);
+        if (panel) {
+            panel.classList.remove('active', 'inactive-left', 'inactive-right');
+        }
+    });
+
+    // Set the target step as active
+    nextPanel.classList.add('active');
+    
+    // Position other panels appropriately
+    for (let i = 1; i <= 4; i++) {
+        const panel = document.getElementById(`step${i}`);
+        if (panel && i !== stepNumber) {
+            if (i < stepNumber) {
+                panel.classList.add('inactive-left');
+            } else {
+                panel.classList.add('inactive-right');
+            }
+        }
     }
     
     currentStep = stepNumber;

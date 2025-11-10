@@ -50,3 +50,13 @@ Next*.htm
 ChatGPT preamble.md
 Perplexity preamble.md
 Mistral preamble.md
+
+# Development session notes and documentation
+SESSION_SUMMARY_*.md
+BUGFIX_SUMMARY.md
+CONTENT_SCRIPT_FIX.md
+MERGE_PRUNE_IMPLEMENTATION.md
+NAVIGATION_FIXES.md
+REFACTORING_PROGRESS.md
+TESTING_GUIDE.md
+TOMORROW_PRIORITIES.md
